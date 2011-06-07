@@ -17,6 +17,8 @@ import javax.swing.event.ChangeListener;
 import javax.vecmath.Point3d;
 
 import de.dfki.embots.mocap.JMocap;
+import java.net.URL;
+import javax.swing.BoxLayout;
 
 /**
  * Pane on right hand side to load animations, change perspective,
@@ -24,24 +26,26 @@ import de.dfki.embots.mocap.JMocap;
  * 
  * @author Michael Kipp
  */
-public class ControlPanel extends JPanel {
+public class ControlPanel extends JPanel
+{
 
     private static final int DEFAULT_FPS = 120;
-    private JMocap _app;
-    private MocapGUI _gui;
+    private JMocap _jmocap;
+    private JMocapGUI _gui;
     private int _lastRot;
     protected JButton _playButton;
-    protected ImageIcon _playIcon,  _pauseIcon;
+    protected ImageIcon _playIcon, _pauseIcon;
     private InfoPanel _info;
     private JLabel _fpsLabel;
     private JSlider _fpsSlider;
 
-    protected ControlPanel(JMocap app, MocapGUI gui) {
-        _app = app;
+    protected ControlPanel(JMocap app, JMocapGUI gui, ActionListener actionListener)
+    {
+        _jmocap = app;
         _gui = gui;
         setLayout(new GridLayout(0, 1));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        add(createLoadPane());
+        add(createFilePane(actionListener));
         add(createPlaybackPane());
         add(createFpsPane());
         add(create3DControls());
@@ -49,71 +53,83 @@ public class ControlPanel extends JPanel {
         add(_info = new InfoPanel(app));
     }
 
-    public InfoPanel getInfo() {
+    public InfoPanel getInfo()
+    {
         return _info;
     }
-    
-    public void setFps(int n) {
+
+    public void setFps(int n)
+    {
         _fpsSlider.setValue(n);
     }
 
-    private JPanel createLoadPane() {
-        JPanel loadPane = new JPanel();
-        loadPane.setBorder(BorderFactory.createEtchedBorder());
-        JButton loadASF = new JButton("ASF");
-        JButton loadAMC = new JButton("AMC");
-        JButton loadBVH = new JButton("BVH");
+    private JPanel createFilePane(ActionListener actionListener)
+    {
+        JPanel p = new JPanel();
+        p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(1), "File"));
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        JButton loadASF = new JButton(JMocapGUI.LOAD_ASF);
+        JButton loadAMC = new JButton(JMocapGUI.LOAD_AMC);
+        JButton loadBVH = new JButton(JMocapGUI.LOAD_BVH);
         JButton clearAll = new JButton("Clear");
-        loadPane.add(loadASF);
-        loadPane.add(loadAMC);
-        loadPane.add(loadBVH);
-        loadPane.add(clearAll);
-        loadASF.addActionListener(new ActionListener() {
+        p.add(loadASF);
+        p.add(loadAMC);
+        p.add(loadBVH);
+        p.add(clearAll);
+        loadASF.addActionListener(actionListener);
+        loadAMC.addActionListener(actionListener);
+        loadBVH.addActionListener(actionListener);
+        clearAll.addActionListener(new ActionListener()
+        {
 
-            public void actionPerformed(ActionEvent e) {
-                _gui.loadASFAction();
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                _jmocap.clearAll();
             }
         });
-        loadAMC.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                _gui.loadAMCAction();
-            }
-        });
-        loadBVH.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                _gui.loadBVHAction();
-            }
-        });
-        clearAll.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                _app.clearAll();
-            }
-        });
-        return loadPane;
+        return p;
     }
 
-    private JPanel createPlaybackPane() {
+    private ImageIcon getIcon(String path)
+    {
+        URL url = getClass().getResource("/" + path);
+        if (url != null) {
+            System.out.println("found url: " + url);
+            return new ImageIcon(url);
+        } else {
+            System.out.println("no url");
+            return new ImageIcon(path);
+        }
+    }
+
+    private JPanel createPlaybackPane()
+    {
         JPanel p = new JPanel();
-        p.setBorder(BorderFactory.createEtchedBorder());
-        _playIcon = new ImageIcon("img/Play16.gif");
-        _pauseIcon = new ImageIcon("img/Pause16.gif");
+        p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(1), "Play"));
+//        _playIcon = new ImageIcon("img/Play16.gif");
+
+
+        _playIcon = getIcon("img/Play16.gif");
+
+        _pauseIcon = getIcon("img/Pause16.gif");
         _playButton = new JButton(_playIcon);
-        JButton stop = new JButton(new ImageIcon("img/Stop16.gif"));
-        JButton ffwd = new JButton(new ImageIcon("img/StepForward16.gif"));
-        JButton fbwd = new JButton(new ImageIcon("img/StepBack16.gif"));
+        JButton stop = new JButton(getIcon("img/Stop16.gif"));
+        JButton ffwd = new JButton(getIcon("img/StepForward16.gif"));
+        JButton fbwd = new JButton(getIcon("img/StepBack16.gif"));
         JButton reset = new JButton("reset");
         _playButton.setFocusPainted(false);
         _playButton.setRolloverEnabled(false);
         stop.setFocusPainted(false);
         stop.setRolloverEnabled(false);
-        _playButton.addActionListener(new ActionListener() {
+        _playButton.addActionListener(new ActionListener()
+        {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
                 if (_playButton.getIcon() == _playIcon) {
-                    if (_app.getFigureManager().playAll()) {
+                    if (_jmocap.getFigureManager().playAll()) {
                         _playButton.setIcon(_pauseIcon);
                     }
                 } else {
@@ -122,33 +138,45 @@ public class ControlPanel extends JPanel {
                 }
             }
         });
-        stop.addActionListener(new ActionListener() {
+        stop.addActionListener(new ActionListener()
+        {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
                 if (_playButton.getIcon() == _pauseIcon) {
                     _playButton.setIcon(_playIcon);
                 }
-                _app.getFigureManager().stopAll();
+                _jmocap.getFigureManager().stopAll();
             }
         });
-        ffwd.addActionListener(new ActionListener() {
+        ffwd.addActionListener(new ActionListener()
+        {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
                 pause();
-                _app.getFigureManager().frameForwardAll();
+                _jmocap.getFigureManager().frameForwardAll();
             }
         });
-        fbwd.addActionListener(new ActionListener() {
+        fbwd.addActionListener(new ActionListener()
+        {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
                 pause();
-                _app.getFigureManager().frameBackwardAll();
+                _jmocap.getFigureManager().frameBackwardAll();
             }
         });
-        reset.addActionListener(new ActionListener() {
+        reset.addActionListener(new ActionListener()
+        {
 
-            public void actionPerformed(ActionEvent e) {
-                _app.getFigure().getSkeleton().reset();
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                _jmocap.getFigure().getSkeleton().reset();
             }
         });
         p.add(_playButton);
@@ -162,7 +190,8 @@ public class ControlPanel extends JPanel {
     /**
      * Panel for 3D controls: rotation and zoom.
      */
-    private JPanel create3DControls() {
+    private JPanel create3DControls()
+    {
         JPanel p = new JPanel();
         JPanel p1 = new JPanel();
         JLabel lrot = new JLabel("Rotate:");
@@ -176,34 +205,40 @@ public class ControlPanel extends JPanel {
         p1.setLayout(new GridLayout(0, 1));
         p1.add(lrot);
         p1.add(rotSlider);
-        final JSlider distSlider = new JSlider(JSlider.VERTICAL, 0, 50, (int) MocapGUI.CAMERA.z);
+        final JSlider distSlider = new JSlider(JSlider.VERTICAL, 0, 50, (int) JMocapController.CAMERA.z);
         distSlider.setMajorTickSpacing(25);
         distSlider.setPaintLabels(true);
         distSlider.setPaintTicks(true);
         distSlider.setPreferredSize(new Dimension(50, 90));
         rotSlider.setPreferredSize(new Dimension(120, 50));
         _lastRot = 0;
-        rotSlider.addChangeListener(new ChangeListener() {
+        rotSlider.addChangeListener(new ChangeListener()
+        {
 
-            public void stateChanged(ChangeEvent e) {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
                 Transform3D tf = new Transform3D();
                 Transform3D t2 = new Transform3D();
                 t2.rotY(Math.toRadians(_lastRot - rotSlider.getValue()));
                 _lastRot = rotSlider.getValue();
-                _app.getUniverse().getViewingPlatform().getViewPlatformTransform().getTransform(tf);
+                _jmocap.getUniverse().getViewingPlatform().getViewPlatformTransform().getTransform(tf);
                 t2.mul(tf);
-                _app.getUniverse().getViewingPlatform().getViewPlatformTransform().setTransform(t2);
+                _jmocap.getUniverse().getViewingPlatform().getViewPlatformTransform().setTransform(t2);
             }
         });
-        distSlider.addChangeListener(new ChangeListener() {
+        distSlider.addChangeListener(new ChangeListener()
+        {
 
-            public void stateChanged(ChangeEvent e) {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
                 Transform3D tf = new Transform3D();
-                _app.getUniverse().getViewingPlatform().getViewPlatformTransform().getTransform(tf);
+                _jmocap.getUniverse().getViewingPlatform().getViewPlatformTransform().getTransform(tf);
                 Point3d cam = new Point3d(0, 0, 0);
                 tf.transform(cam);
                 cam.z = distSlider.getValue();
-                _app.setCameraView(cam, MocapGUI.CAMERA_TARGET);
+                _jmocap.setCameraView(cam, JMocapController.CAMERA_TARGET);
             }
         });
         p.add(p1);
@@ -215,7 +250,8 @@ public class ControlPanel extends JPanel {
     /**
      * Panel for 3D controls: rotation and zoom.
      */
-    private JPanel createCursorControls() {
+    private JPanel createCursorControls()
+    {
         final int MAX = 300;
         JPanel p = new JPanel();
         JPanel p1 = new JPanel();
@@ -236,12 +272,15 @@ public class ControlPanel extends JPanel {
         zSlider.setPaintTicks(true);
         xSlider.setPreferredSize(new Dimension(150, 50));
         zSlider.setPreferredSize(new Dimension(50, 120));
-        
-        _lastRot = 0;
-        ChangeListener ch = new ChangeListener() {
 
-            public void stateChanged(ChangeEvent e) {
-                _gui.moveCursor(xSlider.getValue()/10f, -zSlider.getValue()/10f);
+        _lastRot = 0;
+        ChangeListener ch = new ChangeListener()
+        {
+
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
+                _gui.moveCursor(xSlider.getValue() / 10f, -zSlider.getValue() / 10f);
             }
         };
         xSlider.addChangeListener(ch);
@@ -251,8 +290,9 @@ public class ControlPanel extends JPanel {
         p.add(zSlider);
         return p;
     }
-    
-    private JSlider createFpsSlider() {
+
+    private JSlider createFpsSlider()
+    {
         final JSlider s = new JSlider(JSlider.HORIZONTAL, 0, 200, DEFAULT_FPS);
         s.setPreferredSize(new Dimension(120, 50));
         s.setMinorTickSpacing(10);
@@ -260,19 +300,23 @@ public class ControlPanel extends JPanel {
         s.setPaintTicks(true);
         s.setPaintLabels(true);
         s.setSnapToTicks(true);
-        s.addChangeListener(new ChangeListener() {
+        s.addChangeListener(new ChangeListener()
+        {
 
-            public void stateChanged(ChangeEvent e) {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
                 int i = s.getValue();
                 _fpsLabel.setText("fps: " + i);
-                _app.getFigureManager().setFpsAll(s.getValue());
+                _jmocap.getFigureManager().setFpsAll(s.getValue());
             }
         });
         _fpsSlider = s;
         return s;
     }
 
-    private JPanel createFpsPane() {
+    private JPanel createFpsPane()
+    {
         JPanel p = new JPanel();
         p.setLayout(new GridLayout(0, 1));
         p.setBorder(BorderFactory.createEtchedBorder());
@@ -284,10 +328,11 @@ public class ControlPanel extends JPanel {
         return p;
     }
 
-    protected void pause() {
+    protected void pause()
+    {
         if (_playButton.getIcon() == _pauseIcon) {
             _playButton.setIcon(_playIcon);
-            _app.getFigureManager().pauseAll();
+            _jmocap.getFigureManager().pauseAll();
         }
     }
 }

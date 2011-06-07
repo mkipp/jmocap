@@ -10,6 +10,13 @@
 <project name="JMocap" default="default" basedir=".">
     <description>Builds, tests, and runs the project JMocap.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    
+    <!-- add images and xsd to JAR (NEW: run Proguard) -->
+    <target name="-post-jar">
+        <echo message="** adding img directory **"/>
+        <jar jarfile="${dist.jar}" update="yes" basedir="." includes="img/*.gif"/>
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
