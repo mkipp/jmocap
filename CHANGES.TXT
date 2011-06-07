@@ -1,5 +1,0 @@
-JMocap Changelog
-**************************************************
-
-26.11.2008:
-- added error message when reading (0,0,0) direction in ASF
