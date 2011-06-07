@@ -1,0 +1,63 @@
+#!OML:ASF F:\VICON\USERDATA\INSTALL\rory3\rory3.ASF
+:FULLY-SPECIFIED
+:DEGREES
+1
+root 0 0 0 0 0 0
+lshoulder 0 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+2
+root .1 0 0 0 5 0
+lshoulder 10 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+3
+root .2 0 0 0 10 0
+lshoulder 15 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+4
+root .3 0 0 0 15 0
+lshoulder 20 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+5
+root 0 0 0 0 0 0
+lshoulder 25 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+6
+root 0 0 0 0 0 0
+lshoulder 30 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+4
+root 0 0 0 0 0 0
+lshoulder 40 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+5
+root 0 0 0 0 0 0
+lshoulder 50 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+6
+root 0 0 0 0 0 0
+lshoulder 60 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+6
+root 0 0 0 0 0 0
+lshoulder 70 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+4
+root 0 0 0 0 0 0
+lshoulder 80 0 0
+lelbow 0 0 0
+lwrist 0 0 0
+5
+root 0 0 0 0 0 0
+lshoulder 90 0 30
+lelbow 0 0 0
+lwrist 0 0 0

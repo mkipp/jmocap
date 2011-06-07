@@ -1,0 +1,1 @@
+java -classpath %classpath%;lib/JGraphics3D.jar;dist/JMocap.jar de.dfki.embots.mocap.Main

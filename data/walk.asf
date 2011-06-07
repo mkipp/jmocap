@@ -1,0 +1,282 @@
+#
+# Comment line
+##
+ #
+:version 1.10
+:name BioSkeleton
+:units
+   mass 1.0
+   length 1.0
+   angle deg
+:documentation
+   Example of an Acclaim skeleton
+   To be used with "Walk.amc"
+:root
+   axis XYZ
+   order TX TY TZ RZ RY RX
+   position 0.0 0.0 0.0
+   orientation 0.0 0.0 0.0
+:bonedata
+begin
+   id 1
+   name hips
+   direction 0.000000 1.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 2
+   name hips1
+   direction 0.000000 1.000000 0.000000
+   length  4.310000
+   axis 0.000 0.000 0.000 XYZ
+end
+begin
+   id 3
+   name chest
+   direction 0.000000 1.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 4
+   name chest1
+   direction 0.000000 1.000000 0.000000
+   length  16.870001
+   axis 0.000 0.000 0.000 XYZ
+end
+begin
+   id 5
+   name neck
+   direction 0.000000 1.000000 0.000000
+   length 4.020000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 6
+   name head
+   direction 1.000000 0.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 7
+   name chest2
+   direction 0.068191 0.991126 0.114101
+   length  14.811435
+   axis 0.000 0.000 0.000 XYZ
+end
+begin
+   id 8
+   name leftcollar
+   direction 1.000000 0.000000 0.000000
+   length 4.830000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 9
+   name leftuparm
+   direction 0.000000 -1.000000 0.000000
+   length 12.160000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 10
+   name leftlowarm
+   direction 0.000000 -1.000000 0.000000
+   length 9.700000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 11
+   name lefthand
+   direction 1.000000 0.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 12
+   name chest3
+   direction -0.068191 0.991126 0.114101
+   length  14.811435
+   axis 0.000 0.000 0.000 XYZ
+end
+begin
+   id 13
+   name rightcollar
+   direction -1.000000 0.000000 0.000000
+   length 5.390000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 14
+   name rightuparm
+   direction 0.000000 -1.000000 0.000000
+   length 12.480000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 15
+   name rightlowarm
+   direction 0.000000 -1.000000 0.000000
+   length 10.060000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 16
+   name righthand
+   direction 1.000000 0.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 17
+   name hips2
+   direction 1.000000 0.000000 0.000000
+   length  3.240000
+   axis 0.000 0.000 0.000 XYZ
+end
+begin
+   id 18
+   name leftupleg
+   direction 0.000000 -1.000000 0.000000
+   length 17.290001
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 19
+   name leftlowleg
+   direction 0.000000 -1.000000 0.000000
+   length 16.400000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 20
+   name leftfoot
+   direction 1.000000 0.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 21
+   name hips3
+   direction -1.000000 0.000000 0.000000
+   length  3.240000
+   axis 0.000 0.000 0.000 XYZ
+end
+begin
+   id 22
+   name rightupleg
+   direction 0.000000 -1.000000 0.000000
+   length 17.680000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 23
+   name rightlowleg
+   direction 0.000000 -1.000000 0.000000
+   length 15.510000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+begin
+   id 24
+   name rightfoot
+   direction 1.000000 0.000000 0.000000
+   length 0.000000
+   axis 0.00000 0.00000 0.00000 XYZ
+   dof rx ry rz
+   limits (-180.0 180.0)
+      (-180.0 180.0)
+      (-180.0 180.0)
+end
+:hierarchy
+begin
+   root hips
+   hips hips1 hips2 hips3
+   hips1 chest
+   chest chest1 chest2 chest3
+   chest1 neck
+   neck head
+   chest2 leftcollar
+   leftcollar leftuparm
+   leftuparm leftlowarm
+   leftlowarm lefthand
+   chest3 rightcollar
+   rightcollar rightuparm
+   rightuparm rightlowarm
+   rightlowarm righthand
+   hips2 leftupleg
+   leftupleg leftlowleg
+   leftlowleg leftfoot
+   hips3 rightupleg
+   rightupleg rightlowleg
+   rightlowleg rightfoot
+end

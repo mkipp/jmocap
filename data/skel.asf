@@ -1,0 +1,55 @@
+# AST/ASF file generated using VICON BodyLanguage
+# -----------------------------------------------
+:version 1.10
+:name VICON
+:units
+  mass 1.0
+  length 0.45
+  angle deg
+:documentation
+   .ast/.asf automatically generated from VICON data using
+   VICON BodyBuilder and BodyLanguage model FoxedUp or BRILLIANT.MOD
+:root
+   order TX TY TZ RX RY RZ
+   axis XYZ
+   position 1 1 0  
+   orientation 0 0 0 
+:bonedata
+  begin
+     id 1 
+     name neck
+     direction 0 1 0
+     length 1
+     axis 0 0 0  XYZ
+  end
+  begin
+     id 2 
+     name lshoulder
+     direction 1 0 0
+     length 1 
+     axis 0 0 0  XYZ
+    dof rx ry rz
+  end
+  begin
+     id 3
+     name lelbow
+     direction 1 -1 0
+     length 1.4 
+     axis -20 0 0  XYZ
+    dof rx ry rz
+  end
+  begin
+     id 3
+     name lwrist
+     direction 0 0 1
+     length .5
+     axis 0 0 20  XYZ
+    dof rx ry rz
+  end
+:hierarchy
+  begin
+    root neck
+    neck lshoulder
+    lshoulder lelbow
+    lelbow lwrist
+  end
