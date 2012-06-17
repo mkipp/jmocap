@@ -26,7 +26,7 @@ public class MotionTrailPoint
     private double _dVelocity = 0.0;
     private Color _color;
     private float _fRadius = 0.01f;
-    private float _fVelocityHeight = 0.001f;
+//    private float _fVelocityHeight = 0.001f;
     //	private BranchGroup _bgPoint;
     private BranchGroup _bgMotionTrailPoint;
     private double _dScale;
@@ -39,7 +39,7 @@ public class MotionTrailPoint
     private Circle _circleVelocity;
     private TransformGroup _tgVelocity;
     private TransformGroup _tgMotionTrailPoint;
-    private Switch _switch;
+    private Switch _velocitySwitch;
 
     /**
      * Represents the position of the given bone at a specific time.
@@ -63,7 +63,7 @@ public class MotionTrailPoint
         initSceneObjects();
         createMotionTrailSphere();
         createVelocityVisualisation();
-        _switch.setWhichChild(Switch.CHILD_ALL);
+        _velocitySwitch.setWhichChild(Switch.CHILD_ALL);
     }
 
     
@@ -105,9 +105,9 @@ public class MotionTrailPoint
 
         _bgMotionTrailPoint.addChild(_tgMotionTrailPoint);
 
-        _switch = new Switch(Switch.CHILD_MASK);
-        _switch.setCapability(Switch.ALLOW_SWITCH_WRITE);
-        _tgMotionTrailPoint.addChild(_switch);
+        _velocitySwitch = new Switch(Switch.CHILD_MASK);
+        _velocitySwitch.setCapability(Switch.ALLOW_SWITCH_WRITE);
+        _tgMotionTrailPoint.addChild(_velocitySwitch);
     }
 
     /**
@@ -134,7 +134,7 @@ public class MotionTrailPoint
         t3dSphereScale.setScale(_dScale);
         _tgSphere.addChild(_sphere);
         // set to null for garbage collector
-        _switch.addChild(_tgSphere); // add the sphere
+        _velocitySwitch.addChild(_tgSphere); // add the sphere
 
         materialStandard = null;
         appearance = null;
@@ -165,7 +165,7 @@ public class MotionTrailPoint
         Transform3D t3dVelocityScale = new Transform3D();
         t3dVelocityScale.setScale(_dScale);
         _tgVelocity.addChild(_circleVelocity);
-        _switch.addChild(_tgVelocity);
+        _velocitySwitch.addChild(_tgVelocity);
         t3dVelocityTranslation = null;
         t3dVelocityScale = null;
 
@@ -321,9 +321,9 @@ public class MotionTrailPoint
     public void showMotionTrailVelocity(boolean showMotionTrailVelocity)
     {
         if (showMotionTrailVelocity) {
-            _switch.setWhichChild(Switch.CHILD_ALL);
+            _velocitySwitch.setWhichChild(Switch.CHILD_ALL);
         } else {
-            _switch.setWhichChild(0);
+            _velocitySwitch.setWhichChild(0);
         }
     }
 }

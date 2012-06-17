@@ -22,7 +22,6 @@ import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
@@ -53,6 +52,7 @@ import de.dfki.embots.mocap.reader.AMCReader;
 import de.dfki.embots.mocap.reader.BVHReader;
 import de.dfki.embots.mocap.scene.CoordCross;
 import de.dfki.embots.mocap.scene.Floor;
+import java.util.List;
 
 /**
  * Provides a Java3D world for viewing mocap files (ASF/AMC and BVH).
@@ -69,6 +69,7 @@ public class JMocap
         MouseWheelListener
 {
 
+    private static final String VERSION = "1.0";
     private static final boolean HAS_ORBIT_CONTROL = false;
     private static final int VIEW_ACTIVATION_RADIUS = 250;
     private static final double BACK_CLIP_DISTANCE = 500;
@@ -107,7 +108,7 @@ public class JMocap
     private int nReverseX = 1;
     private int nReverseY = 1;
     private boolean _bClearTrails;
-    private Vector<MotionTrailPoint> _vMotionTrailPoints = null;
+    private List<MotionTrailPoint> _motionTrailPoints = null;
     private CameraChangeListener _cameraChangeListener = null;
     //	private Time _timeMotionTrailEnd;
     //	private Time _timeMotionTrailStart;
@@ -153,7 +154,7 @@ public class JMocap
         //		_su.getViewer().getView().addCanvas3D();
         _su.addBranchGraph(_root);
 
-        printInfo();
+//        printInfo();
         _canvas.addMouseListener(this);
         _canvas.addMouseMotionListener(this);
         _canvas.addMouseWheelListener(this);
@@ -174,16 +175,23 @@ public class JMocap
         return _dirty;
     }
 
-    private void printInfo()
+    /**
+     * @return String with infos on current Java and J3D versions, used 
+     * pipeline and renderer.
+     */
+    public String getInfo()
     {
+        StringBuilder sb = new StringBuilder();
         Map props = SimpleUniverse.getProperties();
-        System.out.println("* Java version:      "
+        sb.append("JMocap version:    " + VERSION);
+        sb.append("\nJava version:      "
                 + System.getProperty("java.version"));
-        System.out.println("* J3D Version:       " + props.get("j3d.version"));
-        System.out.println("* J3D Specification: "
+        sb.append("\nJ3D Version:       " + props.get("j3d.version"));
+        sb.append("\nJ3D Specification: "
                 + props.get("j3d.specification.version"));
-        System.out.println("* Pipeline:          " + props.get("j3d.pipeline"));
-        System.out.println("* Renderer:          " + props.get("j3d.renderer"));
+        sb.append("\nPipeline:          " + props.get("j3d.pipeline"));
+        sb.append("\nRenderer:          " + props.get("j3d.renderer"));
+        return sb.toString();
     }
 
     private void createFloor(BranchGroup bg)
@@ -387,10 +395,10 @@ public class JMocap
      * @param color
      * @param jointName
      */
-    public void addMotionTrail(Vector<MotionTrailPoint> motionTrailPoints)
+    public void addMotionTrail(List<MotionTrailPoint> motionTrailPoints)
     {
         _bClearTrails = true;
-        _vMotionTrailPoints = motionTrailPoints;
+        _motionTrailPoints = motionTrailPoints;
         _canvas.addPositionsToMotionTrail();
         _canvas.repaint();
     }
@@ -404,7 +412,7 @@ public class JMocap
      * @param jointName
      */
     private void addPositionsToMotionTrailPoints(
-            Vector<MotionTrailPoint> motionTrailPoints)
+            List<MotionTrailPoint> motionTrailPoints)
     {
 
         if (_figure.getPlayer() != null) {
@@ -450,7 +458,7 @@ public class JMocap
      *            Vector of MotionTrailPoints
      */
     private void addMotionTrailsToScene(
-            Vector<MotionTrailPoint> motionTrailPoints)
+            List<MotionTrailPoint> motionTrailPoints)
     {
         //		Point3d p = new Point3d();
         //		_figure.getSkeleton().getWorldPosition(p);
@@ -491,8 +499,8 @@ public class JMocap
     public void showMotionTrailVelocity(boolean showMotionTrailVelocity)
     {
         if (showMotionTrailVelocity != _bShowMotionTrailVelocity
-                && _vMotionTrailPoints != null) {
-            for (MotionTrailPoint mtPoint : _vMotionTrailPoints) {
+                && _motionTrailPoints != null) {
+            for (MotionTrailPoint mtPoint : _motionTrailPoints) {
                 mtPoint.showMotionTrailVelocity(showMotionTrailVelocity);
             }
         }
@@ -799,12 +807,12 @@ public class JMocap
     {
 
         private boolean bAddMotionTrail;
-        private double pathStartTime;
-        private double pathEndTime;
-        private float fps;
-        private Color pathColor;
-        private String jointName1;
-        private String jointName2;
+//        private double pathStartTime;
+//        private double pathEndTime;
+//        private float fps;
+//        private Color pathColor;
+//        private String jointName1;
+//        private String jointName2;
         private J3DGraphics2D graphics2D;
 
         public JMocapCanvas3D(GraphicsConfiguration gconfig,
@@ -833,8 +841,8 @@ public class JMocap
         {
             super.preRender();
             if (bAddMotionTrail) {
-                addPositionsToMotionTrailPoints(_vMotionTrailPoints);
-                addMotionTrailsToScene(_vMotionTrailPoints);
+                addPositionsToMotionTrailPoints(_motionTrailPoints);
+                addMotionTrailsToScene(_motionTrailPoints);
                 bAddMotionTrail = false;
             }
         }
@@ -854,18 +862,18 @@ public class JMocap
             graphics2D.dispose();
         }
 
-        public void showPath(double startTime, double endTime, Color color,
-                String name1, String name2, float fps)
-        {
-            bAddMotionTrail = true;
-            pathStartTime = startTime;
-            pathEndTime = endTime;
-            pathColor = color;
-            jointName1 = name1;
-            jointName2 = name2;
-            this.fps = fps;
-
-        }
+//        public void showPath(double startTime, double endTime, Color color,
+//                String name1, String name2, float fps)
+//        {
+//            bAddMotionTrail = true;
+//            pathStartTime = startTime;
+//            pathEndTime = endTime;
+//            pathColor = color;
+//            jointName1 = name1;
+//            jointName2 = name2;
+//            this.fps = fps;
+//
+//        }
 
         public void addPositionsToMotionTrail()
         {
