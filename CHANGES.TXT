@@ -1,4 +1,5 @@
 28.02.2013
+- some API changes so ASF/AMC works with ANVIL
 - added selection for loading AMC animations when 1+ figures are around
 - BUG FIX: playback for AMC was not working with CMU files because
     fps was set to 0
