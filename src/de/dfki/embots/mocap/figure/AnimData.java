@@ -1,5 +1,6 @@
 package de.dfki.embots.mocap.figure;
 
+import de.dfki.embots.mocap.player.MocapPlayer;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class AnimData
 
     private float _data[][]; // first index: bones, second index: frames
     private int _numFrames;
-    private float _fps;
+    private float _fps = MocapPlayer.DEFAULT_FPS;
 
     public AnimData(int numBones)
     {

@@ -2,13 +2,11 @@ package de.dfki.embots.mocap.figure;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-
 import de.dfki.embots.j3d.Util;
 import de.dfki.embots.mocap.player.MocapPlayer;
 

@@ -1,16 +1,17 @@
 /**
  * JMOCAP
- * 
- * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany
- * E-Mail: mich.kipp@googlemail.com
- * 
- * This software has been released under the
- * GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+ *
+ * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany E-Mail:
+ * mich.kipp@googlemail.com
+ *
+ * This software has been released under the GNU LESSER GENERAL PUBLIC LICENSE
+ * Version 3, 29 June 2007
  */
 package de.dfki.embots.mocap.gui;
 
 import de.dfki.embots.mocap.JMocap;
 import de.dfki.embots.mocap.figure.Bone;
+import de.dfki.embots.mocap.figure.Figure;
 import de.dfki.embots.mocap.reader.ASFReader;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,8 +32,7 @@ import javax.vecmath.Point3d;
  *
  * @author Michael Kipp
  */
-public class JMocapController implements ActionListener
-{
+public class JMocapController implements ActionListener {
 
     private static final String PROP_DIR = "dir";
     public static final Point3d CAMERA = new Point3d(1, 3, 15);
@@ -44,8 +45,7 @@ public class JMocapController implements ActionListener
     private JMocapGUI _view;
     private Properties _prop = new Properties();
 
-    public JMocapController()
-    {
+    public JMocapController() {
         _jMocap = new JMocap();
         _jMocap.setCameraView(CAMERA, CAMERA_TARGET);
         loadProp();
@@ -55,8 +55,7 @@ public class JMocapController implements ActionListener
     /**
      * Loads skeleton and anim from previous session.
      */
-    private void loadPreviousSkeleton()
-    {
+    private void loadPreviousSkeleton() {
         String fnASF = _prop.getProperty(PROP_LAST_ASF);
         String fnAMC = _prop.getProperty(PROP_LAST_AMC);
         if (fnASF != null && fnAMC != null) {
@@ -77,13 +76,11 @@ public class JMocapController implements ActionListener
         }
     }
 
-    private File getPropFile()
-    {
+    private File getPropFile() {
         return new File(System.getProperty("user.dir"), PROPERTIES_FILE);
     }
 
-    private void loadProp()
-    {
+    private void loadProp() {
         File f = getPropFile();
         if (f.exists()) {
             try {
@@ -95,8 +92,7 @@ public class JMocapController implements ActionListener
         }
     }
 
-    private void saveProp()
-    {
+    private void saveProp() {
         FileWriter w = null;
         try {
             w = new FileWriter(getPropFile());
@@ -114,20 +110,15 @@ public class JMocapController implements ActionListener
         }
     }
 
-    private File promptForFile(String dirProp, final String ext)
-    {
-        FileFilter ff = new FileFilter()
-        {
-
+    private File promptForFile(String dirProp, final String ext) {
+        FileFilter ff = new FileFilter() {
             @Override
-            public boolean accept(File f)
-            {
+            public boolean accept(File f) {
                 return f.getName().toLowerCase().endsWith(ext) || f.isDirectory();
             }
 
             @Override
-            public String getDescription()
-            {
+            public String getDescription() {
                 return "All ." + ext + " files";
             }
         };
@@ -143,8 +134,10 @@ public class JMocapController implements ActionListener
         return null;
     }
 
-    protected void loadASFAction()
-    {
+    /**
+     * Loads definition file for a skeleton (ASF format).
+     */
+    protected void loadASFAction() {
         File f = promptForFile(PROP_DIR, "asf");
         if (f != null) {
             try {
@@ -165,8 +158,10 @@ public class JMocapController implements ActionListener
         }
     }
 
-    protected void loadAMCAction()
-    {
+    /**
+     * Loads a motion file for a skeleton.
+     */
+    protected void loadAMCAction() {
         File f = promptForFile(PROP_DIR, "amc");
         if (f != null) {
             // String result = JOptionPane.showInputDialog(null,
@@ -174,10 +169,37 @@ public class JMocapController implements ActionListener
             // if (result != null) {
             try {
                 // int layer = Integer.parseInt(result);
-                _jMocap.loadAMC(f);
-                _prop.put(PROP_LAST_AMC, f.toString());
-                saveProp();
-                _view.updateAnimInfo(f.getName());
+
+                List<Figure> figures = _jMocap.getFigureManager().getFigures();
+                Figure selectedFigure = null;
+                if (figures.size() > 0) {
+                    if (figures.size() == 1) {
+                        selectedFigure = figures.get(0);
+                    } else {
+                        String[] names = new String[figures.size()];
+                        for (int i = 0; i < names.length; i++) {
+                            names[i] = figures.get(i).getName();
+                        }
+                        int selection =
+                                JOptionPane.
+                                showOptionDialog(null,
+                                "Select the figure for this motion data",
+                                "Figure", JOptionPane.OK_CANCEL_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE,
+                                null, names, names[0]);
+                        if (selection != JOptionPane.CLOSED_OPTION) {
+                            selectedFigure = figures.get(selection);
+                        }
+                    }
+                    if (selectedFigure != null) {
+                        _jMocap.loadAMC(f, selectedFigure);
+                        _prop.put(PROP_LAST_AMC, f.toString());
+                        saveProp();
+                        _view.updateAnimInfo(f.getName());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please load an ASF file first.");
+                }
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(
                         null,
@@ -189,8 +211,7 @@ public class JMocapController implements ActionListener
         }
     }
 
-    protected void loadBVHAction()
-    {
+    protected void loadBVHAction() {
         File f = promptForFile(PROP_DIR, "bvh");
         if (f != null) {
             String scale = JOptionPane.showInputDialog(
@@ -220,8 +241,7 @@ public class JMocapController implements ActionListener
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         String c = e.getActionCommand();
         System.out.println("command=" + c);
         if (c.equals(JMocapGUI.LOAD_ASF)) {

@@ -2,7 +2,9 @@
  * JMOCAP
  * 
  * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany
- * E-Mail: mich.kipp@googlemail.com
+ * Extended by Quan Nguyen, DFKI
+ * 
+ * Contact: mich.kipp@gmail.com
  * 
  * This software has been released under the
  * GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007
@@ -22,7 +24,6 @@ import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -37,11 +38,9 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
-
 import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
-
 import de.dfki.embots.mocap.figure.AnimData;
 import de.dfki.embots.mocap.figure.Bone;
 import de.dfki.embots.mocap.figure.Figure;
@@ -57,8 +56,8 @@ import java.util.List;
 /**
  * Provides a Java3D world for viewing mocap files (ASF/AMC and BVH).
  * 
- * FLICKER PROBLEM: One solution appears to be switching off "Use unified back/depth buffer" for
- * NVIDIA cards
+ * FLICKER PROBLEM: One solution appears to be switching off 
+ * "Use unified back/depth buffer" for NVIDIA cards
  * 
  * @author Michael Kipp
  */
@@ -110,8 +109,6 @@ public class JMocap
     private boolean _bClearTrails;
     private List<MotionTrailPoint> _motionTrailPoints = null;
     private CameraChangeListener _cameraChangeListener = null;
-    //	private Time _timeMotionTrailEnd;
-    //	private Time _timeMotionTrailStart;
     private boolean _bShowMotionTrailVelocity = false;
 
     public JMocap()
@@ -160,6 +157,22 @@ public class JMocap
         _canvas.addMouseWheelListener(this);
     }
 
+    /**
+     * Starts playback of all animations.
+     * 
+     * @return false if no figures are available
+     */
+    public boolean play() {
+        return getFigureManager().playAll();
+    }
+    
+    /**
+     * Pauses all playback.
+     */
+    public void pause() {
+        getFigureManager().pauseAll();
+    }
+    
     public void initCanvasComponents()
     {
         _canvas.initComponents();
@@ -288,17 +301,34 @@ public class JMocap
         _root.addChild(_figure.getBG());
     }
 
-    public void initAnim(AnimData data, String name)
+    /**
+     * Attaches animation to current figure.
+     */
+    
+    public void initAnim(AnimData data, String name, Figure figure)
     {
-        _figure.setAnimation(data);
-        _figure.getPlayer().reset();
+        figure.setAnimation(data);
+        figure.getPlayer().reset();
     }
 
+    /**
+     * Loads motion file in AMC format.
+     * @throws IOException 
+     */
     public void loadAMC(File file) throws IOException
     {
+        loadAMC(file, _figure);
+    }
+    
+    /**
+     * Loads motion file in AMC format for the given figure.
+     * @throws IOException 
+     */
+    public void loadAMC(File file, Figure figure) throws IOException
+    {
         AMCReader r = new AMCReader();
-        AnimData d = r.readAMC(file, _figure.getSkeleton());
-        initAnim(d, file.getName());
+        AnimData d = r.readAMC(file, figure.getSkeleton());
+        initAnim(d, file.getName(), figure);
     }
 
     public void loadBVH(File f, float targetHeight, Point3d offset)
@@ -308,7 +338,7 @@ public class JMocap
         BVHReader rd = new BVHReader(targetHeight);
         BVHReader.BVHResult bvh = rd.readFile(f);
         initFigure(bvh.skeleton, f.getName(), offset);
-        initAnim(bvh.animation, f.getName());
+        initAnim(bvh.animation, f.getName(), _figure);
 
         _dScale = rd.getScale();
     }

@@ -2,9 +2,7 @@ package de.dfki.embots.mocap.player;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.vecmath.Point3d;
-
 import de.dfki.embots.mocap.figure.AnimData;
 import de.dfki.embots.mocap.figure.Bone;
 
@@ -18,7 +16,7 @@ import de.dfki.embots.mocap.figure.Bone;
 public class MocapPlayer extends AnimPlayer
 {
 
-    private static final float DEFAULT_FPS = 90;
+    public static final float DEFAULT_FPS = 90;
     private boolean _isPlaying = false;
     private Bone _root;
     private Bone[] _bones; // skeleton
@@ -166,9 +164,10 @@ public class MocapPlayer extends AnimPlayer
     @Override
     public void update(float fps)
     {
+        
         if (_isPlaying) {
             _time += 1 / fps;  // time in seconds since setIsPlaying
-            int frame = (int) (_time * _fps); // frame in animation
+            int frame = (int) Math.round(_time * _fps); // frame in animation
             if (frame >= _animData.getNumFrames()) {
                 _time = 0;
                 _frame = -1;
@@ -177,6 +176,5 @@ public class MocapPlayer extends AnimPlayer
                 _frame = frame;
             }
         }
-//        return _frame;
     }
 }

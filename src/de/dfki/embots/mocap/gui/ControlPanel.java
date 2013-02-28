@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.media.j3d.Transform3D;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -15,7 +14,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.vecmath.Point3d;
-
 import de.dfki.embots.mocap.JMocap;
 import java.net.URL;
 import javax.swing.BoxLayout;
@@ -107,11 +105,9 @@ public class ControlPanel extends JPanel
     {
         JPanel p = new JPanel();
         p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(1), "Play"));
-//        _playIcon = new ImageIcon("img/Play16.gif");
-
-
+        
+        // create buttons
         _playIcon = getIcon("img/Play16.gif");
-
         _pauseIcon = getIcon("img/Pause16.gif");
         _playButton = new JButton(_playIcon);
         JButton stop = new JButton(getIcon("img/Stop16.gif"));
@@ -122,6 +118,8 @@ public class ControlPanel extends JPanel
         _playButton.setRolloverEnabled(false);
         stop.setFocusPainted(false);
         stop.setRolloverEnabled(false);
+        
+        // add functionality
         _playButton.addActionListener(new ActionListener()
         {
 
@@ -129,11 +127,11 @@ public class ControlPanel extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 if (_playButton.getIcon() == _playIcon) {
-                    if (_jmocap.getFigureManager().playAll()) {
+                    if (_jmocap.play()) {
                         _playButton.setIcon(_pauseIcon);
                     }
                 } else {
-                    pause();
+                    _jmocap.pause();
                     _playButton.setIcon(_playIcon);
                 }
             }
@@ -156,7 +154,7 @@ public class ControlPanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                pause();
+                _jmocap.pause();
                 _jmocap.getFigureManager().frameForwardAll();
             }
         });
@@ -166,7 +164,7 @@ public class ControlPanel extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                pause();
+                _jmocap.pause();
                 _jmocap.getFigureManager().frameBackwardAll();
             }
         });
@@ -179,6 +177,8 @@ public class ControlPanel extends JPanel
                 _jmocap.getFigure().getSkeleton().reset();
             }
         });
+        
+        // layout
         p.add(_playButton);
         p.add(stop);
         p.add(fbwd);
@@ -328,11 +328,11 @@ public class ControlPanel extends JPanel
         return p;
     }
 
-    protected void pause()
-    {
-        if (_playButton.getIcon() == _pauseIcon) {
-            _playButton.setIcon(_playIcon);
-            _jmocap.getFigureManager().pauseAll();
-        }
-    }
+//    protected void pause()
+//    {
+//        if (_playButton.getIcon() == _pauseIcon) {
+//            _playButton.setIcon(_playIcon);
+//            _jmocap.getFigureManager().pauseAll();
+//        }
+//    }
 }

@@ -2,7 +2,6 @@ package de.dfki.embots.mocap.player;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import de.dfki.embots.mocap.JMocap;
 import de.dfki.embots.mocap.figure.FigureManager;
 
