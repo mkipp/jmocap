@@ -1,0 +1,4 @@
+28.02.2013
+- added selection for loading AMC animations when 1+ figures are around
+- BUG FIX: playback for AMC was not working with CMU files because
+    fps was set to 0
