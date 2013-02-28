@@ -1,15 +1,14 @@
 /**
  * JMOCAP
- * 
- * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany
- * Extended by Quan Nguyen, DFKI
- * 
+ *
+ * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany Extended by
+ * Quan Nguyen, DFKI
+ *
  * Contact: mich.kipp@gmail.com
- * 
- * This software has been released under the
- * GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+ *
+ * This software has been released under the GNU LESSER GENERAL PUBLIC LICENSE
+ * Version 3, 29 June 2007
  */
-
 package de.dfki.embots.mocap;
 
 import java.awt.Color;
@@ -48,6 +47,7 @@ import de.dfki.embots.mocap.figure.FigureManager;
 import de.dfki.embots.mocap.figure.MotionTrailPoint;
 import de.dfki.embots.mocap.gui.CameraChangeListener;
 import de.dfki.embots.mocap.reader.AMCReader;
+import de.dfki.embots.mocap.reader.ASFReader;
 import de.dfki.embots.mocap.reader.BVHReader;
 import de.dfki.embots.mocap.scene.CoordCross;
 import de.dfki.embots.mocap.scene.Floor;
@@ -55,18 +55,17 @@ import java.util.List;
 
 /**
  * Provides a Java3D world for viewing mocap files (ASF/AMC and BVH).
- * 
- * FLICKER PROBLEM: One solution appears to be switching off 
- * "Use unified back/depth buffer" for NVIDIA cards
- * 
+ *
+ * FLICKER PROBLEM: One solution appears to be switching off "Use unified
+ * back/depth buffer" for NVIDIA cards
+ *
  * @author Michael Kipp
  */
 public class JMocap
         implements
         MouseMotionListener,
         MouseListener,
-        MouseWheelListener
-{
+        MouseWheelListener {
 
     private static final String VERSION = "1.0";
     private static final boolean HAS_ORBIT_CONTROL = false;
@@ -111,17 +110,13 @@ public class JMocap
     private CameraChangeListener _cameraChangeListener = null;
     private boolean _bShowMotionTrailVelocity = false;
 
-    public JMocap()
-    {
+    public JMocap() {
         super();
         _root = createScenegraph();
         _root.compile();
-        _canvas = new JMocapCanvas3D(SimpleUniverse.getPreferredConfiguration())
-        {
-
+        _canvas = new JMocapCanvas3D(SimpleUniverse.getPreferredConfiguration()) {
             @Override
-            public void postSwap()
-            {
+            public void postSwap() {
                 super.postSwap();
                 synchronized (this) {
                     _dirty = false;
@@ -159,41 +154,37 @@ public class JMocap
 
     /**
      * Starts playback of all animations.
-     * 
+     *
      * @return false if no figures are available
      */
     public boolean play() {
         return getFigureManager().playAll();
     }
-    
+
     /**
      * Pauses all playback.
      */
     public void pause() {
         getFigureManager().pauseAll();
     }
-    
-    public void initCanvasComponents()
-    {
+
+    public void initCanvasComponents() {
         _canvas.initComponents();
     }
 
-    public synchronized void setDirty()
-    {
+    public synchronized void setDirty() {
         _dirty = true;
     }
 
-    public synchronized boolean isDirty()
-    {
+    public synchronized boolean isDirty() {
         return _dirty;
     }
 
     /**
-     * @return String with infos on current Java and J3D versions, used 
-     * pipeline and renderer.
+     * @return String with infos on current Java and J3D versions, used pipeline
+     * and renderer.
      */
-    public String getInfo()
-    {
+    public String getInfo() {
         StringBuilder sb = new StringBuilder();
         Map props = SimpleUniverse.getProperties();
         sb.append("JMocap version:    " + VERSION);
@@ -207,8 +198,7 @@ public class JMocap
         return sb.toString();
     }
 
-    private void createFloor(BranchGroup bg)
-    {
+    private void createFloor(BranchGroup bg) {
         _floorSwitch = new Switch();
         _floorSwitch.setCapability(Switch.ALLOW_SWITCH_WRITE);
         _floorSwitch.addChild(new Floor().getBG()); // add the floor
@@ -216,16 +206,14 @@ public class JMocap
         _floorSwitch.setWhichChild(0);
     }
 
-    public FigureManager getFigureManager()
-    {
+    public FigureManager getFigureManager() {
         return _figureManager;
     }
 
     /**
      * Removes all figures.
      */
-    public void clearAll()
-    {
+    public void clearAll() {
         for (Figure f : _figureManager.getFigures()) {
             _root.removeChild(f.getBG());
         }
@@ -237,21 +225,18 @@ public class JMocap
 
     }
 
-    public void dispose()
-    {
+    public void dispose() {
         _canvas.dispose();
     }
 
     /**
      * @return 3D viewing component.
      */
-    public Canvas3D getViewComponent()
-    {
+    public Canvas3D getViewComponent() {
         return _canvas;
     }
 
-    public void setCameraView(Point3d pos, Point3d target)
-    {
+    public void setCameraView(Point3d pos, Point3d target) {
         _p3dCameraPosition = pos;
         _p3dCameraPositionInit = new Point3d(pos);
         _p3dCameraTarget = target;
@@ -264,39 +249,33 @@ public class JMocap
         t3d = null;
     }
 
-    public void resetCamera()
-    {
+    public void resetCamera() {
         _p3dCameraPosition = new Point3d(_p3dCameraPositionInit);
         moveCamera(_p3dCameraPosition.x, _p3dCameraPosition.y,
                 _p3dCameraPosition.z, -_nCameraYaw, _nCameraPitch, 0, false);
 
     }
 
-    public SimpleUniverse getUniverse()
-    {
+    public SimpleUniverse getUniverse() {
         return _su;
     }
 
-    public BranchGroup getRootBG()
-    {
+    public BranchGroup getRootBG() {
         return _root;
     }
 
     /**
      * @return Most recently loaded figure.
      */
-    public Figure getFigure()
-    {
+    public Figure getFigure() {
         return _figure;
     }
 
-    public void initFigure(Bone skel, String name)
-    {
+    public void initFigure(Bone skel, String name) {
         initFigure(skel, name, new Point3d());
     }
 
-    public void initFigure(Bone skel, String name, Point3d offset)
-    {
+    public void initFigure(Bone skel, String name, Point3d offset) {
         _figure = _figureManager.addFigure(name, skel, offset);
         _root.addChild(_figure.getBG());
     }
@@ -304,36 +283,33 @@ public class JMocap
     /**
      * Attaches animation to current figure.
      */
-    
-    public void initAnim(AnimData data, String name, Figure figure)
-    {
+    public void initAnim(AnimData data, String name, Figure figure) {
         figure.setAnimation(data);
         figure.getPlayer().reset();
     }
 
     /**
      * Loads motion file in AMC format.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    public void loadAMC(File file) throws IOException
-    {
+    public void loadAMC(File file) throws IOException {
         loadAMC(file, _figure);
     }
-    
+
     /**
      * Loads motion file in AMC format for the given figure.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    public void loadAMC(File file, Figure figure) throws IOException
-    {
+    public void loadAMC(File file, Figure figure) throws IOException {
         AMCReader r = new AMCReader();
         AnimData d = r.readAMC(file, figure.getSkeleton());
         initAnim(d, file.getName(), figure);
     }
 
     public void loadBVH(File f, float targetHeight, Point3d offset)
-            throws IOException
-    {
+            throws IOException {
         _figureManager.pauseAll();
         BVHReader rd = new BVHReader(targetHeight);
         BVHReader.BVHResult bvh = rd.readFile(f);
@@ -343,8 +319,14 @@ public class JMocap
         _dScale = rd.getScale();
     }
 
-    protected Sphere createSphere(Color c, float radius)
+    public void loadASF(File file, Point3d offset) throws IOException
     {
+        ASFReader rd = new ASFReader();
+        Bone skel = rd.getSkeleton(file);
+        initFigure(skel, file.getName(), offset);
+    }
+
+    protected Sphere createSphere(Color c, float radius) {
         Sphere s = new Sphere(radius);
         Color3f c3 = new Color3f(c);
         Appearance app = new Appearance();
@@ -354,8 +336,7 @@ public class JMocap
         return s;
     }
 
-    protected Switch createCoordCross(BranchGroup r, float diameter, float thick)
-    {
+    protected Switch createCoordCross(BranchGroup r, float diameter, float thick) {
         Switch s = new Switch();
         s.setCapability(Switch.ALLOW_SWITCH_WRITE);
         CoordCross cc = new CoordCross(1.2f);
@@ -365,10 +346,10 @@ public class JMocap
     }
 
     /**
-     * One ambient light. 2 directional lights: 1) from up-right-front 2) from up-left-back
+     * One ambient light. 2 directional lights: 1) from up-right-front 2) from
+     * up-left-back
      */
-    protected void lightScene(BranchGroup bg)
-    {
+    protected void lightScene(BranchGroup bg) {
         BoundingSphere bounds = new BoundingSphere(new Point3d(), LIGHT_REACH);
         Color3f white = new Color3f(Color.YELLOW);
         AmbientLight ambientLightNode = new AmbientLight(white);
@@ -392,20 +373,17 @@ public class JMocap
         bg.addChild(light2);
     }
 
-    public void showCoordCross(boolean val)
-    {
+    public void showCoordCross(boolean val) {
         _coordCrossSwitch.setWhichChild(val
                 ? Switch.CHILD_ALL
                 : Switch.CHILD_NONE);
     }
 
-    public void showFloor(boolean val)
-    {
+    public void showFloor(boolean val) {
         _floorSwitch.setWhichChild(val ? Switch.CHILD_ALL : Switch.CHILD_NONE);
     }
 
-    public BranchGroup createScenegraph()
-    {
+    public BranchGroup createScenegraph() {
         BranchGroup r = new BranchGroup();
         r.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
         lightScene(r);
@@ -425,8 +403,7 @@ public class JMocap
      * @param color
      * @param jointName
      */
-    public void addMotionTrail(List<MotionTrailPoint> motionTrailPoints)
-    {
+    public void addMotionTrail(List<MotionTrailPoint> motionTrailPoints) {
         _bClearTrails = true;
         _motionTrailPoints = motionTrailPoints;
         _canvas.addPositionsToMotionTrail();
@@ -442,8 +419,7 @@ public class JMocap
      * @param jointName
      */
     private void addPositionsToMotionTrailPoints(
-            List<MotionTrailPoint> motionTrailPoints)
-    {
+            List<MotionTrailPoint> motionTrailPoints) {
 
         if (_figure.getPlayer() != null) {
             int nCurrentFrame = _figure.getPlayer().getCurrentFrame();
@@ -460,7 +436,7 @@ public class JMocap
 
                     // NEW: position is relative to root joint
 //                    bone.getRelativePosition(_figure.getSkeleton(), p3dPositionInWorld);
-                    
+
                     motionTrailPoint.setPosition(p3dPositionInWorld);
                     p3dPositionInWorld = null;
 
@@ -484,12 +460,10 @@ public class JMocap
     /**
      * Add the given MotionTrailPoints to scene
      *
-     * @param motionTrailPoints
-     *            Vector of MotionTrailPoints
+     * @param motionTrailPoints Vector of MotionTrailPoints
      */
     private void addMotionTrailsToScene(
-            List<MotionTrailPoint> motionTrailPoints)
-    {
+            List<MotionTrailPoint> motionTrailPoints) {
         //		Point3d p = new Point3d();
         //		_figure.getSkeleton().getWorldPosition(p);
         //		System.out.println("Figure position in World: " + p);
@@ -526,8 +500,7 @@ public class JMocap
 
     }
 
-    public void showMotionTrailVelocity(boolean showMotionTrailVelocity)
-    {
+    public void showMotionTrailVelocity(boolean showMotionTrailVelocity) {
         if (showMotionTrailVelocity != _bShowMotionTrailVelocity
                 && _motionTrailPoints != null) {
             for (MotionTrailPoint mtPoint : _motionTrailPoints) {
@@ -537,15 +510,13 @@ public class JMocap
         _bShowMotionTrailVelocity = showMotionTrailVelocity;
     }
 
-    public void removeMotionTrails()
-    {
+    public void removeMotionTrails() {
         if (_bgMotionTrails != null) {
             _bgMotionTrails.removeAllChildren();
         }
     }
 
-    public void initCameraToSkeleton(Point3d cameraTarget)
-    {
+    public void initCameraToSkeleton(Point3d cameraTarget) {
 
 //		_p3dCameraTarget = cameraTarget;
         double dSkeletonSize = 1.5d * _figure.getSkeleton().getMaxDistance();
@@ -582,8 +553,7 @@ public class JMocap
     }
 
     private Transform3D moveCamera(double x, double y, double z, double yaw,
-            double pitch, double roll, boolean holdLookAt)
-    {
+            double pitch, double roll, boolean holdLookAt) {
         Transform3D ret = new Transform3D();// return transform
         Transform3D xrot = new Transform3D();
         Transform3D yrot = new Transform3D();
@@ -627,8 +597,7 @@ public class JMocap
      *
      * @param fieldOfView
      */
-    private void zoomCamera(double fieldOfView)
-    {
+    private void zoomCamera(double fieldOfView) {
         double dFieldOfView = _su.getViewingPlatform().getViewers()[0].getView().getFieldOfView();
 
         _su.getViewingPlatform().getViewers()[0].getView().setFieldOfView(
@@ -636,8 +605,7 @@ public class JMocap
     }
 
     @Override
-    public void mouseDragged(MouseEvent e)
-    {
+    public void mouseDragged(MouseEvent e) {
         // camera rotating
         if (e.getButton() == MouseEvent.BUTTON1) {
 
@@ -715,30 +683,25 @@ public class JMocap
         _nLastMouseCoord_Y = e.getY();
     }
 
-    private void onCameraChanged(String command, double value)
-    {
+    private void onCameraChanged(String command, double value) {
         if (_cameraChangeListener != null) {
             _cameraChangeListener.onCameraChanged(command, value);// TODO Auto-generated method stub
         }
     }
 
-    public Point3d getCameraPosition()
-    {
+    public Point3d getCameraPosition() {
         return _p3dCameraPosition;
     }
 
-    public int getCameraPitch()
-    {
+    public int getCameraPitch() {
         return _nCameraPitch;
     }
 
-    public int getCameraYaw()
-    {
+    public int getCameraYaw() {
         return _nCameraYaw;
     }
 
-    public void reverseXAxis(boolean reverse)
-    {
+    public void reverseXAxis(boolean reverse) {
         if (reverse) {
             nReverseX = -1;
         } else {
@@ -746,8 +709,7 @@ public class JMocap
         }
     }
 
-    public void reverseYAxis(boolean reverse)
-    {
+    public void reverseYAxis(boolean reverse) {
         if (reverse) {
             nReverseY = -1;
         } else {
@@ -756,32 +718,27 @@ public class JMocap
     }
 
     @Override
-    public void mouseMoved(MouseEvent e)
-    {
+    public void mouseMoved(MouseEvent e) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void mouseClicked(MouseEvent e)
-    {
+    public void mouseClicked(MouseEvent e) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void mouseEntered(MouseEvent e)
-    {
+    public void mouseEntered(MouseEvent e) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void mouseExited(MouseEvent e)
-    {
+    public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void mousePressed(MouseEvent e)
-    {
+    public void mousePressed(MouseEvent e) {
         _nBeginMouseCoord_X = e.getX();
         _nLastMouseCoord_X = e.getX();
         _nBeginMouseCoord_Y = e.getY();
@@ -791,14 +748,12 @@ public class JMocap
     }
 
     @Override
-    public void mouseReleased(MouseEvent e)
-    {
+    public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e)
-    {
+    public void mouseWheelMoved(MouseWheelEvent e) {
         int notches = e.getWheelRotation();
         _p3dCameraPosition.z = _p3dCameraPosition.z + notches * _fGainer_Z;
         moveCamera(_p3dCameraPosition.x, _p3dCameraPosition.y,
@@ -809,15 +764,13 @@ public class JMocap
     }
 
     public void setCameraChangeListener(
-            CameraChangeListener cameraChangeListener)
-    {
+            CameraChangeListener cameraChangeListener) {
         _cameraChangeListener = cameraChangeListener;
 
     }
 
     public void setCamera(double x, double y, double z, int yaw, int pitch,
-            int roll, boolean lookAtPos)
-    {
+            int roll, boolean lookAtPos) {
         _p3dCameraPosition.x = x;
         _p3dCameraPosition.y = y;
         _p3dCameraPosition.z = z;
@@ -833,8 +786,7 @@ public class JMocap
 
     }
 
-    class JMocapCanvas3D extends Canvas3D
-    {
+    class JMocapCanvas3D extends Canvas3D {
 
         private boolean bAddMotionTrail;
 //        private double pathStartTime;
@@ -846,29 +798,25 @@ public class JMocap
         private J3DGraphics2D graphics2D;
 
         public JMocapCanvas3D(GraphicsConfiguration gconfig,
-                boolean offscreenflag)
-        {
+                boolean offscreenflag) {
             super(gconfig, offscreenflag);
             initComponents();
         }
 
-        public JMocapCanvas3D(GraphicsConfiguration preferredConfiguration)
-        {
+        public JMocapCanvas3D(GraphicsConfiguration preferredConfiguration) {
             super(preferredConfiguration);
             initComponents();
 
         }
 
-        public void initComponents()
-        {
+        public void initComponents() {
             graphics2D = this.getGraphics2D();
             graphics2D.setColor(Color.LIGHT_GRAY);
             graphics2D.setFont(new Font("Serif", Font.BOLD, 15));
         }
 
         @Override
-        public void preRender()
-        {
+        public void preRender() {
             super.preRender();
             if (bAddMotionTrail) {
                 addPositionsToMotionTrailPoints(_motionTrailPoints);
@@ -878,8 +826,7 @@ public class JMocap
         }
 
         @Override
-        public void postRender()
-        {
+        public void postRender() {
             super.postRender();
 
             showFrameInformation();
@@ -887,8 +834,7 @@ public class JMocap
             graphics2D.flush(true);
         }
 
-        public void dispose()
-        {
+        public void dispose() {
             graphics2D.dispose();
         }
 
@@ -904,14 +850,11 @@ public class JMocap
 //            this.fps = fps;
 //
 //        }
-
-        public void addPositionsToMotionTrail()
-        {
+        public void addPositionsToMotionTrail() {
             bAddMotionTrail = true;
         }
 
-        public void showFrameInformation()
-        {
+        public void showFrameInformation() {
             if (_figure != null) {
                 graphics2D.drawString("frame: "
                         + _figure.getPlayer().getCurrentFrame(),

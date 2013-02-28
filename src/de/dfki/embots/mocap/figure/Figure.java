@@ -12,7 +12,7 @@ import de.dfki.embots.mocap.player.MocapPlayer;
 
 /**
  * Represents an autonomous graphical figure. Contains the skeleton and
- * its own player (= motor).
+ * its own player.
  * 
  * @author Michael Kipp
  */

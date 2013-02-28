@@ -41,15 +41,15 @@ public class JMocapController implements ActionListener {
     private static final String PROP_LAST_AMC = "file.amc";
     private static final String PROP_LAST_BVH = "file.bvh";
     private static final String PROPERTIES_FILE = ".jmocap";
-    private JMocap _jMocap;
+    private JMocap _jmocap;
     private JMocapGUI _view;
     private Properties _prop = new Properties();
 
     public JMocapController() {
-        _jMocap = new JMocap();
-        _jMocap.setCameraView(CAMERA, CAMERA_TARGET);
+        _jmocap = new JMocap();
+        _jmocap.setCameraView(CAMERA, CAMERA_TARGET);
         loadProp();
-        _view = new JMocapGUI(this, _jMocap);
+        _view = new JMocapGUI(this, _jmocap);
     }
 
     /**
@@ -63,15 +63,15 @@ public class JMocapController implements ActionListener {
                 File f = new File(fnASF);
                 ASFReader rd = new ASFReader();
                 Bone skel = rd.getSkeleton(f);
-                _jMocap.initFigure(skel, f.getName());
+                _jmocap.initFigure(skel, f.getName());
                 _view.updateSkeletonInfo(f.getName());
                 f = new File(fnAMC);
-                _jMocap.loadAMC(f);
+                _jmocap.loadAMC(f);
                 _view.updateAnimInfo(f.getName());
             } catch (IOException e) {
                 System.out.println("ERROR! loadpreviousskeleton");
                 e.printStackTrace();
-                _jMocap.clearAll();
+                _jmocap.clearAll();
             }
         }
     }
@@ -141,10 +141,15 @@ public class JMocapController implements ActionListener {
         File f = promptForFile(PROP_DIR, "asf");
         if (f != null) {
             try {
-                _jMocap.getFigureManager().pauseAll();
-                ASFReader rd = new ASFReader();
-                Bone skel = rd.getSkeleton(f);
-                _jMocap.initFigure(skel, f.getName(), _view.getCursorPos());
+                _jmocap.getFigureManager().pauseAll();
+                
+                _jmocap.loadASF(f, _view.getCursorPos());
+                
+//                ASFReader rd = new ASFReader();
+//                Bone skel = rd.getSkeleton(f);
+//                _jMocap.initFigure(skel, f.getName(), _view.getCursorPos());
+                
+                
                 _view.updateSkeletonInfo(f.getName());
                 _prop.put(PROP_LAST_ASF, f.toString());
                 saveProp();
@@ -170,7 +175,7 @@ public class JMocapController implements ActionListener {
             try {
                 // int layer = Integer.parseInt(result);
 
-                List<Figure> figures = _jMocap.getFigureManager().getFigures();
+                List<Figure> figures = _jmocap.getFigureManager().getFigures();
                 Figure selectedFigure = null;
                 if (figures.size() > 0) {
                     if (figures.size() == 1) {
@@ -192,7 +197,7 @@ public class JMocapController implements ActionListener {
                         }
                     }
                     if (selectedFigure != null) {
-                        _jMocap.loadAMC(f, selectedFigure);
+                        _jmocap.loadAMC(f, selectedFigure);
                         _prop.put(PROP_LAST_AMC, f.toString());
                         saveProp();
                         _view.updateAnimInfo(f.getName());
@@ -221,14 +226,14 @@ public class JMocapController implements ActionListener {
             if (scale != null) {
                 try {
                     float sc = Float.parseFloat(scale);
-                    _jMocap.loadBVH(f, sc, _view.getCursorPos());
+                    _jmocap.loadBVH(f, sc, _view.getCursorPos());
 
                     // GUI related stuff:
                     _view.updateSkeletonInfo(f.getName());
                     _view.updateAnimInfo(f.getName());
                     _prop.put(PROP_LAST_BVH, f.toString());
                     saveProp();
-                    _view.setFps((int) _jMocap.getFigure().getPlayer().getPlaybackFps());
+                    _view.setFps((int) _jmocap.getFigure().getPlayer().getPlaybackFps());
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(
                             null,
@@ -249,7 +254,7 @@ public class JMocapController implements ActionListener {
         } else if (c.equals(JMocapGUI.LOAD_AMC)) {
             loadAMCAction();
         } else if (c.equals(JMocapGUI.MENU_RESET_CAM)) {
-            _jMocap.setCameraView(CAMERA, CAMERA_TARGET);
+            _jmocap.setCameraView(CAMERA, CAMERA_TARGET);
         } else if (c.equals(JMocapGUI.LOAD_BVH)) {
             loadBVHAction();
         }

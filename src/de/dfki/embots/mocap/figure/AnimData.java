@@ -4,7 +4,7 @@ import de.dfki.embots.mocap.player.MocapPlayer;
 import java.util.List;
 
 /**
- * Stores mocap animation data.
+ * Stores a single mocap animation.
  * 
  * @author Michael Kipp
  */

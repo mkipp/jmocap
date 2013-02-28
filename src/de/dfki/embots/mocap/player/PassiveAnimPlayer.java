@@ -6,11 +6,13 @@ import java.util.List;
 import de.dfki.embots.mocap.figure.Bone;
 
 /**
- * Abstract player of figure animations.
+ * Abstract player for animation. It is a passive player which means
+ * that the update method must be called continually to make the 
+ * animation run.
  * 
  * @author Michael Kipp
  */
-public abstract class AnimPlayer {
+public abstract class PassiveAnimPlayer {
     protected List<PlayerFrameListener> _listeners = new ArrayList<PlayerFrameListener>();
     
     public void addListener(PlayerFrameListener li) {

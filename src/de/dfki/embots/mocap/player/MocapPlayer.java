@@ -13,7 +13,7 @@ import de.dfki.embots.mocap.figure.Bone;
  * 
  * @author Michael Kipp
  */
-public class MocapPlayer extends AnimPlayer
+public class MocapPlayer extends PassiveAnimPlayer
 {
 
     public static final float DEFAULT_FPS = 90;
