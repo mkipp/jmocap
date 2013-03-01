@@ -1,3 +1,6 @@
+01.03.2013
+- refactored package naming: de.dfki.embots.mocap -> de.jmocap
+
 28.02.2013
 - some API changes so ASF/AMC works with ANVIL
 - added selection for loading AMC animations when 1+ figures are around
