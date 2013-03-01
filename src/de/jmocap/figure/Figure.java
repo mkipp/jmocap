@@ -1,6 +1,6 @@
 package de.jmocap.figure;
 
-import de.jmocap.anim.AnimData;
+import de.jmocap.anim.MotionData;
 import java.util.ArrayList;
 import java.util.List;
 import javax.media.j3d.BranchGroup;
@@ -157,7 +157,7 @@ public class Figure
         return _branchGroup;
     }
 
-    public void setAnimation(AnimData data)
+    public void setAnimation(MotionData data)
     {
         _player = new AnimController(_skeleton, data, _offset);
         _player.setPlaybackFps(data.getFps());

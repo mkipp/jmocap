@@ -62,7 +62,7 @@ public class JMocapController implements ActionListener {
             try {
                 File f = new File(fnASF);
                 ASFReader rd = new ASFReader();
-                Bone skel = rd.getSkeleton(f);
+                Bone skel = rd.readSkeleton(f);
                 _jmocap.initFigure(skel, f.getName());
                 _view.updateSkeletonInfo(f.getName());
                 f = new File(fnAMC);

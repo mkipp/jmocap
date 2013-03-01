@@ -1,4 +1,4 @@
-package de.jmocap.figure;
+package de.jmocap.scene;
 
 import java.awt.Color;
 import javax.media.j3d.Appearance;

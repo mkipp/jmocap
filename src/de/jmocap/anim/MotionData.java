@@ -8,14 +8,14 @@ import java.util.List;
  * 
  * @author Michael Kipp
  */
-public class AnimData
+public class MotionData
 {
 
     private float _data[][]; // first index: bones, second index: frames
     private int _numFrames;
     private float _fps = AnimController.DEFAULT_FPS;
 
-    public AnimData(int numBones)
+    public MotionData(int numBones)
     {
         _data = new float[numBones][];
     }

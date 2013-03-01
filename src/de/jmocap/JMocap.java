@@ -40,11 +40,11 @@ import javax.vecmath.Vector3f;
 import com.sun.j3d.utils.behaviors.vp.OrbitBehavior;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
-import de.jmocap.anim.AnimData;
+import de.jmocap.anim.MotionData;
 import de.jmocap.figure.Bone;
 import de.jmocap.figure.Figure;
 import de.jmocap.figure.FigureManager;
-import de.jmocap.figure.MotionTrailPoint;
+import de.jmocap.scene.MotionTrailPoint;
 import de.jmocap.gui.CameraChangeListener;
 import de.jmocap.reader.AMCReader;
 import de.jmocap.reader.ASFReader;
@@ -283,7 +283,7 @@ public class JMocap
     /**
      * Attaches animation to current figure.
      */
-    public void initAnim(AnimData data, String name, Figure figure) {
+    public void initAnim(MotionData data, String name, Figure figure) {
         figure.setAnimation(data);
         figure.getPlayer().reset();
     }
@@ -304,7 +304,7 @@ public class JMocap
      */
     public void loadAMC(File file, Figure figure) throws IOException {
         AMCReader r = new AMCReader();
-        AnimData d = r.readAMC(file, figure.getSkeleton());
+        MotionData d = r.readMotion(file, figure.getSkeleton());
         initAnim(d, file.getName(), figure);
     }
 
@@ -314,7 +314,7 @@ public class JMocap
         BVHReader rd = new BVHReader(targetHeight);
         BVHReader.BVHResult bvh = rd.readFile(f);
         initFigure(bvh.skeleton, f.getName(), offset);
-        initAnim(bvh.animation, f.getName(), _figure);
+        initAnim(bvh.motion, f.getName(), _figure);
 
         _dScale = rd.getScale();
     }
@@ -322,7 +322,7 @@ public class JMocap
     public void loadASF(File file, Point3d offset) throws IOException
     {
         ASFReader rd = new ASFReader();
-        Bone skel = rd.getSkeleton(file);
+        Bone skel = rd.readSkeleton(file);
         initFigure(skel, file.getName(), offset);
     }
 

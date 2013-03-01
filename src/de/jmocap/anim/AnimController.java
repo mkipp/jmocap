@@ -22,11 +22,11 @@ public class AnimController extends AbstractAnimController
     private double _time = 0;
     private float _fps;  // playback fps
     private int _frame = -1;  // current frame
-    private AnimData _animData;
+    private MotionData _animData;
     private Point3d _offset;
     private boolean _pinAtRoot = false;
 
-    public AnimController(Bone skeleton, AnimData dat, Point3d offset)
+    public AnimController(Bone skeleton, MotionData dat, Point3d offset)
     {
         _fps = DEFAULT_FPS;
         _animData = dat;

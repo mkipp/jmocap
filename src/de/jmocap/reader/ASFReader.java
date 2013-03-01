@@ -74,7 +74,7 @@ import de.jmocap.figure.Bone;
  *
  * @author Michael Kipp
  */
-public class ASFReader implements SkeletonReader {
+public class ASFReader {
 
     private static final boolean DEBUG = false;
     private static final float LENGTH_SCALE = 1f;
@@ -314,8 +314,7 @@ public class ASFReader implements SkeletonReader {
      * @return Root bone of the skeleton
      * @throws java.io.IOException
      */
-    @Override
-    public Bone getSkeleton(File file) throws IOException {
+    public Bone readSkeleton(File file) throws IOException {
         System.out.println("Read ASF: " + file);
         ASFRoot root = new ASFRoot();
         HashMap<String, ASFNode> name2bone = new HashMap<String, ASFNode>();

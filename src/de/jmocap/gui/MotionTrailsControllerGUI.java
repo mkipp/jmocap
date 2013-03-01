@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.vecmath.Vector3d;
 
 import de.jmocap.JMocap;
-import de.jmocap.figure.MotionTrailPoint;
+import de.jmocap.scene.MotionTrailPoint;
 
 /**
  * GUI for testing motion trail visualization.

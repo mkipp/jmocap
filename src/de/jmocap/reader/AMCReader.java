@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import de.jmocap.anim.AnimData;
+import de.jmocap.anim.MotionData;
 import de.jmocap.figure.Bone;
 
 /**
@@ -24,8 +24,7 @@ public class AMCReader {
     public AMCReader() {
     }
 
-//    public AnimData readAMC(File file, Bone skeletonRoot, int layer) {
-    public AnimData readAMC(File file, Bone skeletonRoot) {
+    public MotionData readMotion(File file, Bone skeletonRoot) {
         System.out.println("Read AMC: " + file);
         Pattern num = Pattern.compile("[0-9]+");
         BufferedReader in = null;
@@ -34,7 +33,7 @@ public class AMCReader {
             HashMap<String, Bone> name2bone = new HashMap<String, Bone>();
             HashMap<String, List<Float>> name2data = new HashMap<String, List<Float>>();
             skeletonRoot.collectBones(name2bone);
-            AnimData dat = new AnimData(name2bone.size());
+            MotionData dat = new MotionData(name2bone.size());
             in = new BufferedReader(new FileReader(file));
             String line;
 

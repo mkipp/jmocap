@@ -6,7 +6,8 @@ import java.util.List;
 import javax.vecmath.Point3d;
 
 /**
- * Manages a number of figures.
+ * Manages a number of figures and allows to control playback for 
+ * all figures.
  * 
  * @author Michael Kipp
  */
