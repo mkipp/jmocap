@@ -49,6 +49,7 @@ import de.jmocap.gui.CameraChangeListener;
 import de.jmocap.reader.AMCReader;
 import de.jmocap.reader.ASFReader;
 import de.jmocap.reader.BVHReader;
+import de.jmocap.reader.MocapReader;
 import de.jmocap.scene.CoordCross;
 import de.jmocap.scene.Floor;
 import java.util.List;
@@ -311,12 +312,13 @@ public class JMocap
     public void loadBVH(File f, float targetHeight, Point3d offset)
             throws IOException {
         _figureManager.pauseAll();
-        BVHReader rd = new BVHReader(targetHeight);
-        BVHReader.BVHResult bvh = rd.readFile(f);
-        initFigure(bvh.skeleton, f.getName(), offset);
-        initAnim(bvh.motion, f.getName(), _figure);
+        MocapReader rd = new BVHReader(targetHeight);
+        rd.readFiles(f);
+        //BVHReader.BVHResult bvh = rd.readFile(f);
+        initFigure(rd.getSkeleton(), f.getName(), offset);
+        initAnim(rd.getMotion(), f.getName(), _figure);
 
-        _dScale = rd.getScale();
+        _dScale = ((BVHReader)rd).getScale();
     }
 
     public void loadASF(File file, Point3d offset) throws IOException

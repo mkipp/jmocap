@@ -83,7 +83,7 @@ public class ASFReader {
     /**
      * Intermediate structure to store ASF data in the 1st pass.
      */
-    abstract class ASFNode {
+    private abstract class ASFNode {
 
         List<ASFNode> children = new ArrayList<ASFNode>();
         int[] dof = new int[0]; // number and order of motion channels
@@ -97,13 +97,13 @@ public class ASFReader {
         }
     }
 
-    class ASFRoot extends ASFNode {
+    private class ASFRoot extends ASFNode {
 
         Vector3d position; // starting position
         Vector3d orientation; // starting orientation
     }
 
-    class ASFBone extends ASFNode {
+    private class ASFBone extends ASFNode {
 
         String name;
         Vector3d offset; // offset to the child

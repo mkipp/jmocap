@@ -25,7 +25,7 @@ import de.jmocap.figure.Bone;
  *
  * @author Michael Kipp
  */
-public class BVHReader {
+public class BVHReader implements MocapReader {
 
     private List<BVHJoint> _jointList = new ArrayList<BVHJoint>(); // sequential list of joints
     private double _scale = 1d; // scaling factor used for bone length and position
@@ -33,14 +33,25 @@ public class BVHReader {
     private int _indexCounter;
     private double _maxRootDistance = 0;
     private double _targetHeight = 5;
+    private Bone skeleton;
+    private MotionData motion;
 
-    /**
-     * Stores results.
-     */
-    public class BVHResult {
+    @Override
+    public void readFiles(File... files) throws IOException {
+        if (files.length < 0) {
+            throw new IncorrectMocapFilesException("You have to specify a single BVH file.");
+        }
+        readFile(files[0]);
+    }
 
-        public Bone skeleton;
-        public MotionData motion;
+    @Override
+    public Bone getSkeleton() {
+        return skeleton;
+    }
+
+    @Override
+    public MotionData getMotion() {
+        return motion;
     }
 
     /**
@@ -100,8 +111,7 @@ public class BVHReader {
      *
      * @throws java.io.IOException
      */
-    public BVHResult readFile(File file) throws IOException {
-        BVHResult res = new BVHResult();
+    private void readFile(File file) throws IOException {
         String line;
         BufferedReader in = new BufferedReader(new FileReader(file));
         while ((line = in.readLine()) != null) {
@@ -109,8 +119,6 @@ public class BVHReader {
             if (line.startsWith("HIERARCHY")) {
                 _maxRootDistance = 0;
                 BVHJoint r = readHierarchy(in);
-
-                //                System.out.println("### max = " + _maxRootDistance);
 
                 // scale skeleton to target height
                 if (_targetHeight > -1) {
@@ -121,13 +129,12 @@ public class BVHReader {
                 }
 
                 // 2nd pass through skeleton
-                res.skeleton = processJoint(r, null, r.findMax(0) / 15);
+                skeleton = processJoint(r, null, r.findMax(0) / 15);
             }
             if (line.startsWith("MOTION")) {
-                res.motion = readMotion(in, res.skeleton);
+                motion = readMotion(in, skeleton);
             }
         }
-        return res;
     }
 
     public double getScale() {

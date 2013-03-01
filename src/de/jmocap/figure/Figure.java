@@ -87,19 +87,6 @@ public class Figure
      * For motion data where the skeleton head point up the z-axis, use this transformation (reset
      * with resetRotation).
      */
-    //    public void correctUpVector(Vector3d rotationAxis, double angle)
-    //    {
-    //        Transform3D t1 = new Transform3D();
-    //        Transform3D t2 = new Transform3D();
-    //        t1.rotX(-Math.PI / 2d);
-    //        t2.rotY(-Math.PI / 2d);
-    //        t2.mul(t1);
-    //        _tg.setTransform(t2);
-    //    }
-    /**
-     * For motion data where the skeleton head point up the z-axis, use this transformation (reset
-     * with resetRotation).
-     */
     public void setZUpRotation()
     {
         Transform3D t2 = new Transform3D();

@@ -15,14 +15,11 @@ import de.jmocap.anim.MotionData;
 import de.jmocap.figure.Bone;
 
 /**
- * Reads AMC motion files.
+ * Reads AMC motion file.
  * 
  * @author Michael Kipp
  */
 public class AMCReader {
-
-    public AMCReader() {
-    }
 
     public MotionData readMotion(File file, Bone skeletonRoot) {
         System.out.println("Read AMC: " + file);
@@ -54,7 +51,6 @@ public class AMCReader {
             for (String key : name2bone.keySet()) {
                 List<Float> ls = name2data.get(key);
                 if (ls != null) {
-//                    name2bone.get(key).loadAnimData(layer, ls);
                     dat.putBoneData(name2bone.get(key).getIndex(), ls);
                 }
             }
@@ -69,7 +65,6 @@ public class AMCReader {
                 Logger.getLogger(ASFReader.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-//        return keyframe + 1;
         return null;
     }
 
