@@ -13,13 +13,13 @@ import de.jmocap.figure.Bone;
  * @author Michael Kipp
  */
 public abstract class AbstractAnimController {
-    protected List<PlayerFrameListener> _listeners = new ArrayList<PlayerFrameListener>();
+    protected List<FrameChangeListener> _listeners = new ArrayList<FrameChangeListener>();
     
-    public void addListener(PlayerFrameListener li) {
+    public void addListener(FrameChangeListener li) {
         _listeners.add(li);
     }
     
-    public void removeListener(PlayerFrameListener li) {
+    public void removeListener(FrameChangeListener li) {
         _listeners.remove(li);
     }
     

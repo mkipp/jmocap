@@ -13,13 +13,13 @@ import javax.vecmath.Point3d;
 
 import de.jmocap.figure.Bone;
 import de.jmocap.figure.Figure;
-import de.jmocap.anim.PlayerFrameListener;
+import de.jmocap.anim.FrameChangeListener;
 
 /**
  *
  * @author Michael Kipp
  */
-public class JointInspector extends JFrame implements PlayerFrameListener
+public class JointInspector extends JFrame implements FrameChangeListener
 {
 
     private JLabel _rpos, _tpos, _hpos, _x, _y, _z;

@@ -7,18 +7,18 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-import de.jmocap.util.Util;
 import de.jmocap.anim.AnimController;
+import de.jmocap.anim.FrameChangeListener;
 
 /**
- * Represents an autonomous graphical figure. Contains the skeleton and
- * its own player.
- * 
+ * Represents an autonomous graphical figure. Contains the skeleton and its own
+ * player.
+ *
  * @author Michael Kipp
+ * @version 14-05-2013
  */
-public class Figure
-{
+public class Figure {
+
     private String _name;
     private Bone _skeleton; // root bone of skeleton
     private AnimController _player; // drives animation
@@ -29,13 +29,10 @@ public class Figure
     /**
      * Creates a new figure and initializes the skeleton.
      *
-     * @param name
-     *            ID of the figure
-     * @param skeleton
-     *            Root bone of the skeleton
+     * @param name ID of the figure
+     * @param skeleton Root bone of the skeleton
      */
-    public Figure(String name, Bone skeleton)
-    {
+    public Figure(String name, Bone skeleton) {
         _name = name;
         _skeleton = skeleton;
         _branchGroup = new BranchGroup();
@@ -48,17 +45,24 @@ public class Figure
         _branchGroup.compile();
     }
 
-    public double getScale()
-    {
+    public void addFrameChangeListener(FrameChangeListener li) {
+        _player.addListener(li);
+    }
+
+    public void removeFrameChangeListener(FrameChangeListener li) {
+        _player.removeListener(li);
+    }
+
+    public double getScale() {
         return _skeleton.getScale();
     }
 
     /**
-     * Measures the length of the skeleton by computing the max. distance between any two leaves in
-     * the skeleton tree. Figure must be LIVE to allow this operation.
+     * Measures the length of the skeleton by computing the max. distance
+     * between any two leaves in the skeleton tree. Figure must be LIVE to allow
+     * this operation.
      */
-    public double measureLength()
-    {
+    public double measureLength() {
         List<Bone> leaves = new ArrayList<Bone>();
         List<Bone> all = new ArrayList<Bone>();
         _skeleton.collectBones(all);
@@ -84,74 +88,63 @@ public class Figure
     }
 
     /**
-     * For motion data where the skeleton head point up the z-axis, use this transformation (reset
-     * with resetRotation).
+     * For motion data where the skeleton head point up the z-axis, use this
+     * transformation (reset with resetRotation).
      */
-    public void setZUpRotation()
-    {
+    public void setZUpRotation() {
         Transform3D t2 = new Transform3D();
         t2.rotX(-Math.PI / 2d);
         _tg.setTransform(t2);
     }
 
     /**
-     * For motion data where the skeleton head point up the x-axis, use this transformation (reset
-     * with resetRotation).
+     * For motion data where the skeleton head point up the x-axis, use this
+     * transformation (reset with resetRotation).
      */
-    public void setXUpRotation()
-    {
+    public void setXUpRotation() {
         Transform3D t2 = new Transform3D();
         t2.rotZ(Math.PI / 2d);
         _tg.setTransform(t2);
     }
 
-    public void resetRotation()
-    {
+    public void resetRotation() {
         _tg.setTransform(new Transform3D());
     }
 
-    public boolean hasAnimation()
-    {
+    public boolean hasAnimation() {
         return _player != null;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return _name;
     }
 
-    public AnimController getPlayer()
-    {
+    public AnimController getPlayer() {
         return _player;
     }
 
-    public Bone getSkeleton()
-    {
+    public Bone getSkeleton() {
         return _skeleton;
     }
 
-    public void setBG(BranchGroup bg)
-    {
+    public void setBG(BranchGroup bg) {
         _branchGroup = bg;
     }
 
     /**
      * Point in the scene graph where this skeleton is attached.
      */
-    public BranchGroup getBG()
-    {
+    public BranchGroup getBG() {
 
         return _branchGroup;
     }
 
-    public void setAnimation(MotionData data)
-    {
+    public void setAnimation(MotionData data) {
         _player = new AnimController(_skeleton, data, _offset);
         _player.setPlaybackFps(data.getFps());
     }
 
-    public void setOffset(Point3d p)
-    {
+    public void setOffset(Point3d p) {
         _offset = p;
     }
 }

@@ -48,6 +48,7 @@ public class AnimController extends AbstractAnimController
         return (int) Math.max(time * _fps, 0);
     }
 
+    @Override
     public Bone[] getBones()
     {
         return _bones;
@@ -63,6 +64,7 @@ public class AnimController extends AbstractAnimController
         _pinAtRoot = val;
     }
 
+    @Override
     public void gotoTime(double sec)
     {
         int f = mapTimeToFrame(sec);
@@ -80,7 +82,9 @@ public class AnimController extends AbstractAnimController
                 }
             }
             _frame = frame;
-            for (PlayerFrameListener li : _listeners) {
+            
+            // notify listeners
+            for (FrameChangeListener li : _listeners) {
                 li.frameUpdate(frame);
             }
         }
@@ -111,6 +115,7 @@ public class AnimController extends AbstractAnimController
         return _fps;
     }
 
+    @Override
     public void setIsPlaying(boolean val)
     {
         if (val && _animData != null) {
@@ -120,11 +125,13 @@ public class AnimController extends AbstractAnimController
         }
     }
 
+    @Override
     public boolean isPlaying()
     {
         return _isPlaying;
     }
 
+    @Override
     public void reset()
     {
         _isPlaying = false;

@@ -8,13 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import de.jmocap.JMocap;
-import de.jmocap.anim.PlayerFrameListener;
+import de.jmocap.anim.FrameChangeListener;
 
 /**
  *
  * @author Michael Kipp
  */
-public class InfoPanel extends JPanel implements PlayerFrameListener {
+public class InfoPanel extends JPanel implements FrameChangeListener {
 
     private static final Font FONT_INFO = new Font("Arial", Font.BOLD, 14);
     private static final Color COLOR_INFO = Color.BLUE;
