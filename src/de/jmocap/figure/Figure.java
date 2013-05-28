@@ -13,7 +13,7 @@ import de.jmocap.anim.FrameChangeListener;
 /**
  * Represents an autonomous graphical figure. Contains the skeleton and its own
  * player.
- *
+ * 
  * @author Michael Kipp
  * @version 14-05-2013
  */
