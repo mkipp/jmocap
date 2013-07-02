@@ -36,6 +36,9 @@ import de.jmocap.figure.Bone;
 import de.jmocap.figure.BoneGeom;
 import de.jmocap.figure.JointGeom;
 import de.jmocap.anim.AnimDriver;
+import de.jmocap.vis.facingangle.FacingAngleGUI;
+import de.jmocap.vis.tangentialarrow.TangentialArrowGUI;
+import javax.swing.JOptionPane;
 
 /**
  * Camera is set for a meter system, looking at a 2m person.
@@ -300,6 +303,75 @@ public class JMocapGUI extends JFrame
             }
         });
 
+        // Levin McNeillGrid
+        
+        mi = new MenuItem("McNeillGrid");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+        
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+        	if(_jMocap.getFigure() == null){
+				JOptionPane.showMessageDialog(new JFrame(), "BVH file required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
+			}else  _jMocap.addMcNeillGrid();
+        }
+        });
+        
+        mi = new MenuItem("RelativeMovementPlate");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+        
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+        	if(_jMocap.getFigure() == null){
+			}else  _jMocap.addRelativeMovingPlates();
+        }
+        });
+        
+        // Michi JMocapDisk
+        mi = new MenuItem("Show disk");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+			
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(_jMocap.getFigure() == null){
+				JOptionPane.showMessageDialog(new JFrame(), "BVH file required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
+			}else  _jMocap.addDisk();
+		}
+            });
+        
+        // Michi JMocapDistancePlate
+        mi = new MenuItem("Show distance plate");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+			
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(_jMocap.getFigureManager().getFigures().size() < 2){
+				JOptionPane.showMessageDialog(new JFrame(), "Two BVH files required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
+			}else  _jMocap.addDistancePlate();
+		}
+            });
+        
+        // Franziska: TangentialArrowGUI
+        mi = new MenuItem("Tangential Arrow");
+        m.add(mi);
+        mi.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                TangentialArrowGUI newGUI = new TangentialArrowGUI(_jMocap.getTangentialArrowController());
+            }
+        });
+        
+        // Franziska: FacingAngleGUI
+        mi = new MenuItem("Facing Angle");
+        m.add(mi);
+        mi.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                FacingAngleGUI newGUI = new FacingAngleGUI(_jMocap.getFacingAngleController());
+            }
+        });
+        
         return mb;
     }
 

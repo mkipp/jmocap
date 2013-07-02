@@ -52,6 +52,14 @@ import de.jmocap.reader.BVHReader;
 import de.jmocap.reader.MocapReader;
 import de.jmocap.scene.CoordCross;
 import de.jmocap.scene.Floor;
+import de.jmocap.vis.disk.DiskInterface;
+import de.jmocap.vis.disk.DiskJmocap;
+import de.jmocap.vis.distancePlatexxx.DistancePlateInterface;
+import de.jmocap.vis.distancePlatexxx.DistancePlateJMocap;
+import de.jmocap.vis.facingangle.FacingAngleController;
+import de.jmocap.vis.mcneillgrid.McNeillGridLogic;
+import de.jmocap.vis.relativemovement.RelativeMovementPlate;
+import de.jmocap.vis.tangentialarrow.TangentialArrowController;
 import java.util.List;
 
 /**
@@ -110,6 +118,8 @@ public class JMocap
     private List<MotionTrailPoint> _motionTrailPoints = null;
     private CameraChangeListener _cameraChangeListener = null;
     private boolean _bShowMotionTrailVelocity = false;
+    private TangentialArrowController _tangentialArrowController; //Franziska
+    private FacingAngleController _facingAngleController; //Franziska
 
     public JMocap() {
         super();
@@ -151,8 +161,61 @@ public class JMocap
         _canvas.addMouseListener(this);
         _canvas.addMouseMotionListener(this);
         _canvas.addMouseWheelListener(this);
+        
+        _tangentialArrowController = new TangentialArrowController(this); //Franziska
+        _facingAngleController = new FacingAngleController(this); // Franziska
     }
 
+    /**
+     * @author Franziska Zamponi
+     */
+    public TangentialArrowController getTangentialArrowController(){
+        return _tangentialArrowController;
+    }
+    
+    /**
+     * @author Franziska Zamponi
+     */
+    public FacingAngleController getFacingAngleController(){
+        return _facingAngleController;
+    }
+
+    /**
+     * @author Michael Hrstka
+     */
+    public void addDistancePlate() {
+        DistancePlateInterface distanceObject =  new DistancePlateJMocap(this);
+        // length between root and knee will be set as relative distance
+        distanceObject.setRelativeDistance("Root", "R_Tibia");
+        // set object
+        distanceObject.setDistancePlate();
+    }
+    
+    
+     /**
+     * @author Michael Hrstka
+     */
+    public void addDisk() {
+	DiskInterface disk = new DiskJmocap(this);
+        // set transperency, sensibility, radius ... here!
+        // --- setyz ---
+        disk.setDisk();
+    }
+    
+     /**
+     * @author Levin Freiherr von Hollen
+     */
+    public void addRelativeMovingPlates() {
+    	RelativeMovementPlate rmp = new RelativeMovementPlate(this);
+    }
+    
+    /**
+     * @author Levin Freiherr von Hollen
+     */
+    public void addMcNeillGrid() {
+    	McNeillGridLogic mcNeillGrid = new McNeillGridLogic(this);
+    }
+    
     /**
      * Starts playback of all animations.
      *
