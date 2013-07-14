@@ -53,11 +53,11 @@ import de.jmocap.reader.MocapReader;
 import de.jmocap.scene.CoordCross;
 import de.jmocap.scene.Floor;
 import de.jmocap.vis.disk.DiskInterface;
-import de.jmocap.vis.disk.DiskJmocap;
-import de.jmocap.vis.distancePlatexxx.DistancePlateInterface;
-import de.jmocap.vis.distancePlatexxx.DistancePlateJMocap;
+import de.jmocap.vis.disk.SpeedDisk;
+import de.jmocap.vis.distancePlate.DistancePlateInterface;
+import de.jmocap.vis.distancePlate.DistancePlateJMocap;
 import de.jmocap.vis.facingangle.FacingAngleController;
-import de.jmocap.vis.mcneillgrid.McNeillGridLogic;
+import de.jmocap.vis.gesturespace.McNeillGridLogic;
 import de.jmocap.vis.relativemovement.RelativeMovementPlate;
 import de.jmocap.vis.tangentialarrow.TangentialArrowController;
 import java.util.List;
@@ -196,7 +196,7 @@ public class JMocap
      * @author Michael Hrstka
      */
     public void addDisk() {
-	DiskInterface disk = new DiskJmocap(this);
+	DiskInterface disk = new SpeedDisk(this);
         // set transperency, sensibility, radius ... here!
         // --- setyz ---
         disk.setDisk();

@@ -57,10 +57,12 @@ public class McNeillGrid implements McNeillGridInterface {
     private float xScale = 1.0f;
     private float yScale = 1.0f;
 
+    @Override
     public BranchGroup getGrid() {
         return gridBranchGroup;
     }
 
+    @Override
     public Vector3f getPosition() {
         Transform3D trans = new Transform3D();
         Vector3f position = new Vector3f();
@@ -71,6 +73,7 @@ public class McNeillGrid implements McNeillGridInterface {
         return position;
     }
 
+    @Override
     public Vector3f getVectorFromRightToLeftofTheGrid() {
 
         //Position of the left box
@@ -94,18 +97,22 @@ public class McNeillGrid implements McNeillGridInterface {
         return vectorFromRightToLeft;
     }
 
+    @Override
     public void increaseXScale() {
         xScale += 0.1f;
     }
 
+    @Override
     public void decreaseXScale() {
         xScale -= 0.1f;
     }
 
+    @Override
     public void increaseYScale() {
         yScale += 0.1f;
     }
 
+    @Override
     public void decreaseYScale() {
         yScale -= 0.1f;
     }
@@ -138,6 +145,7 @@ public class McNeillGrid implements McNeillGridInterface {
         return app;
     }
 
+    @Override
     public void createGrid(float shoulderWidth) {
         //Beim erstellen der Box dims mit 0.5 mul 
         //fuer coordcomp. werte lassen!

@@ -1,4 +1,3 @@
-
 package de.jmocap.vis.tangentialarrow;
 
 import com.sun.j3d.utils.geometry.Cone;
@@ -13,8 +12,7 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
 
 /**
- *
- * @author Franziska
+ * @author Franziska Zamponi
  * @date 29.06.13
  */
 public class Arrow implements ArrowInterface{

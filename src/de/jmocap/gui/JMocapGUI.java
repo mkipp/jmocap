@@ -305,7 +305,7 @@ public class JMocapGUI extends JFrame
 
         // Levin McNeillGrid
         
-        mi = new MenuItem("McNeillGrid");
+        mi = new MenuItem("Gesture Space (McNeill)");
         m.add(mi);
         mi.addActionListener(new ActionListener() {
         
@@ -317,7 +317,7 @@ public class JMocapGUI extends JFrame
         }
         });
         
-        mi = new MenuItem("RelativeMovementPlate");
+        mi = new MenuItem("Relative Movement Plate");
         m.add(mi);
         mi.addActionListener(new ActionListener() {
         
@@ -329,7 +329,7 @@ public class JMocapGUI extends JFrame
         });
         
         // Michi JMocapDisk
-        mi = new MenuItem("Show disk");
+        mi = new MenuItem("Speed Disk");
         m.add(mi);
         mi.addActionListener(new ActionListener() {
 			
@@ -342,7 +342,7 @@ public class JMocapGUI extends JFrame
             });
         
         // Michi JMocapDistancePlate
-        mi = new MenuItem("Show distance plate");
+        mi = new MenuItem("Interpersonal Distance");
         m.add(mi);
         mi.addActionListener(new ActionListener() {
 			

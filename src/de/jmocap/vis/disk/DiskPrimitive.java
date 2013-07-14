@@ -1,7 +1,3 @@
-/**
- * @author Hrstka Michael Christopher
- * @version 06.2013
- */
 package de.jmocap.vis.disk;
 
 import java.awt.Color;
@@ -19,7 +15,12 @@ import java.awt.Font;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.RenderingAttributes;
+import javax.media.j3d.Shape3D;
 
+/**
+ * @author Michael Christopher Hrstka
+ * @version 06.2013
+ */
 
 public class DiskPrimitive implements DiskPrimitiveInterface{
     Text2D text;
@@ -37,7 +38,7 @@ public class DiskPrimitive implements DiskPrimitiveInterface{
     * creates a disk with a direction arrow
     * and returns the BranchGroup
     */
-    public BranchGroup createDiskWithDirectionarrow(float transparency, float radius){
+    public BranchGroup createDiskWithDirectionArrow(float transparency, float radius){
         // disc
         BranchGroup bg = createCylidner(transparency, radius);
 
@@ -50,6 +51,8 @@ public class DiskPrimitive implements DiskPrimitiveInterface{
         Appearance arrowAppearance = arrow.getAppearance();
         rendAttr = new RenderingAttributes();
         arrowAppearance.setRenderingAttributes(rendAttr);
+        arrowAppearance.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_READ);
+        //app.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_WRITE);
         rendAttr.setVisible(true);
 
         rendAttr.setCapability(RenderingAttributes.ALLOW_VISIBLE_WRITE);
@@ -71,6 +74,8 @@ public class DiskPrimitive implements DiskPrimitiveInterface{
 
         Appearance app = new Appearance();
         app.setCapability(Appearance.ALLOW_COLORING_ATTRIBUTES_WRITE);
+        app.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_READ);
+        //app.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_WRITE);
 
         BranchGroup bg = new BranchGroup();
 
@@ -86,6 +91,9 @@ public class DiskPrimitive implements DiskPrimitiveInterface{
         app.setTransparencyAttributes(ta);
 
         Cylinder cl = new Cylinder(radius, 0.01f, app);
+        cl.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+        cl.setCapability(Shape3D.ALLOW_APPEARANCE_OVERRIDE_READ);
+        cl.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
         bg.addChild(cl);
         return bg;
