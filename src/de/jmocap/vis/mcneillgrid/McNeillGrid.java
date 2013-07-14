@@ -130,6 +130,14 @@ public class McNeillGrid implements McNeillGridInterface {
 		app.setColoringAttributes(ca);
 		app.setTransparencyAttributes(ta);
 
+                
+                //###
+                app.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_READ);
+                app.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_WRITE);
+                app.setCapability(Appearance.ALLOW_COLORING_ATTRIBUTES_READ);
+                app.setCapability(Appearance.ALLOW_COLORING_ATTRIBUTES_WRITE);
+                //###
+                
 		return app;
 	}
 
@@ -165,7 +173,12 @@ public class McNeillGrid implements McNeillGridInterface {
 		centerCenterHeight = shoulderWidth*0.6f * yScale;
 		centerCenterWidth = shoulderWidth*0.6f * xScale;
 		centerCenterBox = new Box(centerCenterWidth*0.5f, centerCenterHeight*0.5f, 0.05f, appearanceCenterCenter);
-		Transform3D transform3DCenterCenter = new Transform3D();
+		
+                //###
+                centerCenterBox.setCapability(Box.ALLOW_LOCAL_TO_VWORLD_READ);
+		//###
+                
+                Transform3D transform3DCenterCenter = new Transform3D();
 		transform3DCenterCenter.setTranslation(new Vector3d (0.0f,0.0f,0.0f));
 		TransformGroup transformGroupCenterCenter = new TransformGroup(transform3DCenterCenter);
 		transformGroupCenterCenter.addChild(centerCenterBox);
@@ -303,7 +316,11 @@ public class McNeillGrid implements McNeillGridInterface {
 		leftWidth = shoulderWidth*0.3f * xScale;
 		leftHeight = shoulderWidth*0.6f * yScale;
 		leftBox = new Box(leftWidth*0.5f, leftHeight*0.5f, 0.05f, appearanceLeft);
-		Transform3D transform3DLeft = new Transform3D();
+		//###
+                leftBox.setCapability(Box.ALLOW_LOCAL_TO_VWORLD_READ);
+		//###
+                
+                Transform3D transform3DLeft = new Transform3D();
 		transform3DLeft.setTranslation(new Vector3d (shoulderWidth*1.3f*0.5f,0.0f,0.0f));
 		TransformGroup transformGroupLeft = new TransformGroup(transform3DLeft);
 		transformGroupLeft.addChild(leftBox);
@@ -326,7 +343,11 @@ public class McNeillGrid implements McNeillGridInterface {
 		rightWidth = shoulderWidth*0.3f * xScale;
 		rightHeight = shoulderWidth*0.6f * yScale; 
 		rightBox = new Box(rightWidth*0.5f, rightHeight*0.5f, 0.05f, appearanceRight);
-		Transform3D transform3DRight = new Transform3D();
+		
+                //###
+                rightBox.setCapability(Box.ALLOW_LOCAL_TO_VWORLD_READ);
+                //###
+                Transform3D transform3DRight = new Transform3D();
 		transform3DRight.setTranslation(new Vector3d (shoulderWidth*-1.3f*0.5f,0.0f,0.0f));
 		TransformGroup transformGroupRight = new TransformGroup(transform3DRight);
 		transformGroupRight.addChild(rightBox);

@@ -124,6 +124,7 @@ public class DiskJmocap implements DiskInterface{
 
 	// get default disk branchGroup
 	disk = primitiveDisk.createDiskWithDirectionarrow(transparency, diskRadius);
+        disk.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
 		
 	tGroupDisk.addChild(disk);
         tGroupText.addChild(primitiveDisk.getText2D("Directional speed disk"));
