@@ -56,7 +56,7 @@ import de.jmocap.vis.disk.DiskInterface;
 import de.jmocap.vis.disk.SpeedDisk;
 import de.jmocap.vis.distancePlate.DistancePlateInterface;
 import de.jmocap.vis.distancePlate.DistancePlateJMocap;
-import de.jmocap.vis.facingangle.FacingAngleController;
+import de.jmocap.vis.orientation.FacingAngleController;
 import de.jmocap.vis.gesturespace.McNeillGridLogic;
 import de.jmocap.vis.relativemovement.RelativeMovementPlate;
 import de.jmocap.vis.tangentialarrow.TangentialArrowController;

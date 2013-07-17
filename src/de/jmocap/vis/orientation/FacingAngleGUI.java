@@ -1,8 +1,10 @@
-package de.jmocap.vis.facingangle;
+package de.jmocap.vis.orientation;
 
+import de.jmocap.figure.Figure;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +31,8 @@ public class FacingAngleGUI {
     private JTextField _textHeightMiddle;
     private JTextField _textRotation;
 
-    public FacingAngleGUI(FacingAngleController facingAngleController) {
+    public FacingAngleGUI(FacingAngleController facingAngleController,
+            List<Figure> figures) {
         _fac = facingAngleController;
 
         JFrame frame = new JFrame("Facing Angle");
@@ -37,10 +40,14 @@ public class FacingAngleGUI {
 
         JLabel labelFigure1 = new JLabel("Figure 1 Name: ");
         _textFigure1 = new JTextField(15);
+        if (figures.size() > 0) 
+            _textFigure1.setText(figures.get(0).getName());
         panel.add(labelFigure1);
         panel.add(_textFigure1);
         JLabel labelFigure2 = new JLabel("Figure 2 Name: ");
         _textFigure2 = new JTextField(15);
+        if (figures.size() > 1) 
+            _textFigure2.setText(figures.get(1).getName());
         panel.add(labelFigure2);
         panel.add(_textFigure2);
 

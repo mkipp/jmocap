@@ -36,7 +36,7 @@ import de.jmocap.figure.Bone;
 import de.jmocap.figure.BoneGeom;
 import de.jmocap.figure.JointGeom;
 import de.jmocap.anim.AnimDriver;
-import de.jmocap.vis.facingangle.FacingAngleGUI;
+import de.jmocap.vis.orientation.FacingAngleGUI;
 import de.jmocap.vis.tangentialarrow.TangentialArrowGUI;
 import javax.swing.JOptionPane;
 
@@ -364,11 +364,13 @@ public class JMocapGUI extends JFrame
         });
         
         // Franziska: FacingAngleGUI
-        mi = new MenuItem("Facing Angle");
+        mi = new MenuItem("Interpersonal Orientation");
         m.add(mi);
         mi.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                FacingAngleGUI newGUI = new FacingAngleGUI(_jMocap.getFacingAngleController());
+                
+                FacingAngleGUI newGUI = new FacingAngleGUI(_jMocap.getFacingAngleController(),
+                        _jMocap.getFigureManager().getFigures());
             }
         });
         

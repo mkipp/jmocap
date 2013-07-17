@@ -1,4 +1,4 @@
-package de.jmocap.vis.facingangle;
+package de.jmocap.vis.orientation;
 
 import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.geometry.Cylinder;

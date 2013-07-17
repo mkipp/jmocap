@@ -1,4 +1,4 @@
-package de.jmocap.vis.facingangle;
+package de.jmocap.vis.orientation;
 
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.geometry.Text2D;
@@ -41,6 +41,8 @@ public class FacingAngle {
         _text = new Text2D("00000°", new Color3f(1, 1, 1), "Helvetica", 40, Font.BOLD);
         _text.getAppearance().setCapability(Appearance.ALLOW_TEXTURE_ATTRIBUTES_WRITE);
         _text.getAppearance().setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+        _text.getAppearance().setCapability(Appearance.ALLOW_TEXTURE_READ);
+        _text.setCapability(Text2D.ALLOW_APPEARANCE_READ);
         PolygonAttributes polyAttrib = new PolygonAttributes();
         polyAttrib.setCullFace(PolygonAttributes.CULL_NONE);
         polyAttrib.setBackFaceNormalFlip(true);

@@ -1,4 +1,4 @@
-package de.jmocap.vis.facingangle;
+package de.jmocap.vis.orientation;
 
 import de.jmocap.anim.FrameChangeListener;
 
