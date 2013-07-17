@@ -13,6 +13,7 @@ import de.jmocap.JMocap;
 import de.jmocap.anim.FrameChangeListener;
 import de.jmocap.figure.Bone;
 import de.jmocap.figure.Figure;
+import javax.media.j3d.Appearance;
 import javax.media.j3d.ColoringAttributes;
 
 /**
@@ -117,6 +118,8 @@ public class SpeedDisk implements DiskInterface {
         // get default disk branchGroup
         disk = primitiveDisk.createDiskWithDirectionArrow(transparency, diskRadius);
         disk.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+        
+        
 
         tGroupDisk.addChild(disk);
         tGroupText.addChild(primitiveDisk.getText2D("Directional speed disk"));
@@ -194,6 +197,8 @@ public class SpeedDisk implements DiskInterface {
             }
         }
         // set the color
+        Primitive p = (Primitive) disk.getChild(0);
+        Appearance a = p.getAppearance();
         ((Primitive) disk.getChild(0)).getAppearance().setColoringAttributes(color);
 
         // scale the disk
