@@ -194,7 +194,7 @@ public class DistancePlateJMocap implements DistancePlateInterface {
         double lengthInMeter = length * 0.5 / relativeDistanceFactor;
         DecimalFormat df = new DecimalFormat("0.00");
         String meters = df.format(lengthInMeter);
-        disk.setText2D("Distance plate: " + meters + " m");
+        //disk.setText2D("Distance plate: " + meters + " m");
     }
 
     /**

@@ -32,7 +32,7 @@ public class DiskPrimitive implements DiskPrimitiveInterface {
      */
     @Override
     public BranchGroup createDisk(float transparency, float radius) {
-        return createCylidner(transparency, radius);
+        return createCylinder(transparency, radius);
     }
 
     /**
@@ -41,7 +41,7 @@ public class DiskPrimitive implements DiskPrimitiveInterface {
     @Override
     public BranchGroup createDiskWithDirectionArrow(float transparency, float radius) {
         // disc
-        BranchGroup bg = createCylidner(transparency, radius);
+        BranchGroup bg = createCylinder(transparency, radius);
 
         // direction arrow
         Transform3D t3D = new Transform3D();
@@ -72,7 +72,7 @@ public class DiskPrimitive implements DiskPrimitiveInterface {
         return bg;
     }
 
-    private BranchGroup createCylidner(float transparency, float radius) {
+    private BranchGroup createCylinder(float transparency, float radius) {
 
         Appearance app = new Appearance();
         app.setCapability(Appearance.ALLOW_COLORING_ATTRIBUTES_WRITE);
@@ -80,6 +80,7 @@ public class DiskPrimitive implements DiskPrimitiveInterface {
         //app.setCapability(Appearance.ALLOW_TRANSPARENCY_ATTRIBUTES_WRITE);
 
         BranchGroup bg = new BranchGroup();
+        bg.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
 
         // set color
         Color3f objColor = new Color3f(Color.gray);
@@ -93,7 +94,8 @@ public class DiskPrimitive implements DiskPrimitiveInterface {
         app.setTransparencyAttributes(ta);
 
         Cylinder cl = new Cylinder(radius, 0.01f, Primitive.ENABLE_APPEARANCE_MODIFY, app);
-
+        //cl.setCapability(Cylinder.ALLOW_CHILDREN_READ);
+        
         bg.addChild(cl);
         return bg;
     }
@@ -111,7 +113,9 @@ public class DiskPrimitive implements DiskPrimitiveInterface {
 
         text = new Text2D(message, new Color3f(Color.BLUE), "Helvetica", 50, Font.BOLD);
         text.getAppearance().setCapability(Appearance.ALLOW_TEXTURE_ATTRIBUTES_WRITE);
+        text.getAppearance().setCapability(Appearance.ALLOW_TEXTURE_READ);
         text.getAppearance().setCapability(Appearance.ALLOW_TEXTURE_WRITE);
+        text.setCapability(Text2D.ALLOW_APPEARANCE_READ);
 
         // make text 2-sided
         Appearance app = text.getAppearance();
