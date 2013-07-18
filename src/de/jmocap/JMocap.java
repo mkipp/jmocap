@@ -154,14 +154,12 @@ public class JMocap
         } else {
             //			_su.getViewingPlatform().getViewPlatform().setBounds(new BoundingSphere(new Point3d(0.0,0.0,0.0), 100.0));
         }
-        //		_su.getViewer().getView().addCanvas3D();
         _su.addBranchGraph(_root);
 
-//        printInfo();
         _canvas.addMouseListener(this);
         _canvas.addMouseMotionListener(this);
         _canvas.addMouseWheelListener(this);
-        
+
         _tangentialArrowController = new HandDirectionController(this); //Franziska
         _facingAngleController = new FacingAngleController(this); // Franziska
     }
@@ -169,14 +167,14 @@ public class JMocap
     /**
      * @author Franziska Zamponi
      */
-    public HandDirectionController getTangentialArrowController(){
+    public HandDirectionController getTangentialArrowController() {
         return _tangentialArrowController;
     }
-    
+
     /**
      * @author Franziska Zamponi
      */
-    public FacingAngleController getFacingAngleController(){
+    public FacingAngleController getFacingAngleController() {
         return _facingAngleController;
     }
 
@@ -184,38 +182,37 @@ public class JMocap
      * @author Michael Hrstka
      */
     public void addDistancePlate() {
-        DistancePlateInterface distanceObject =  new DistanceController(this);
+        DistancePlateInterface distanceObject = new DistanceController(this);
         // length between root and knee will be set as relative distance
         distanceObject.setRelativeDistance("Root", "R_Tibia");
         // set object
         distanceObject.setDistancePlate();
     }
-    
-    
-     /**
+
+    /**
      * @author Michael Hrstka
      */
     public void addDisk() {
-	DiskInterface disk = new Disk(this);
+        DiskInterface disk = new Disk(this);
         // set transperency, sensibility, radius ... here!
         // --- setyz ---
         disk.setDisk();
     }
-    
-     /**
+
+    /**
      * @author Levin Freiherr von Hollen
      */
     public void addRelativeMovingPlates() {
-    	RelativeMovementPlate rmp = new RelativeMovementPlate(this);
+        RelativeMovementPlate rmp = new RelativeMovementPlate(this);
     }
-    
+
     /**
      * @author Levin Freiherr von Hollen
      */
     public void addMcNeillGrid() {
-    	McNeillGridLogic mcNeillGrid = new McNeillGridLogic(this);
+        McNeillGridLogic mcNeillGrid = new McNeillGridLogic(this);
     }
-    
+
     /**
      * Starts playback of all animations.
      *
@@ -381,11 +378,10 @@ public class JMocap
         initFigure(rd.getSkeleton(), f.getName(), offset);
         initAnim(rd.getMotion(), f.getName(), _figure);
 
-        _dScale = ((BVHReader)rd).getScale();
+        _dScale = ((BVHReader) rd).getScale();
     }
 
-    public void loadASF(File file, Point3d offset) throws IOException
-    {
+    public void loadASF(File file, Point3d offset) throws IOException {
         ASFReader rd = new ASFReader();
         Bone skel = rd.readSkeleton(file);
         initFigure(skel, file.getName(), offset);

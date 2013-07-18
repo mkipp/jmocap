@@ -1,8 +1,10 @@
 /**
  * JMOCAP
  *
- * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany E-Mail:
- * mich.kipp@googlemail.com
+ * Developed by Michael Kipp Augsburg University of Applied Sciences DFKI,
+ * Saarbrücken Germany
+ *
+ * E-Mail: mich.kipp@googlemail.com
  *
  * This software has been released under the GNU LESSER GENERAL PUBLIC LICENSE
  * Version 3, 29 June 2007
@@ -33,16 +35,21 @@ import de.jmocap.figure.Bone;
 import de.jmocap.figure.BoneGeom;
 import de.jmocap.figure.JointGeom;
 import de.jmocap.anim.AnimDriver;
+import de.jmocap.anim.AnimDriverListener;
+import de.jmocap.anim.FrameChangeListener;
 import de.jmocap.vis.orientation.FacingAngleGUI;
 import de.jmocap.vis.handdirection.HandDirectionGUI;
 import javax.swing.JOptionPane;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * Camera is set for a meter system, looking at a 2m person.
  *
  * @author Michael Kipp
  */
-public class JMocapGUI extends JFrame {
+public class JMocapGUI extends JFrame implements AnimDriverListener {
 
     private static final float CURSOR_RADIUS = .02f;
     public static final String MENU_RESET_CAM = "Reset camera";
@@ -54,6 +61,15 @@ public class JMocapGUI extends JFrame {
     private ControlPanel _control;
     private TransformGroup _cursorTG;
     private Point3d _cursorPos = new Point3d();
+    private JSlider _playbackSlider;
+
+    @Override
+    public void update(double fps) {
+        if (_jMocap.getFigure() != null && _jMocap.getFigure().getPlayer() != null) {
+            //System.out.println("frame " + _jMocap.getFigure().getPlayer().getCurrentFrame());
+            _playbackSlider.setValue(_jMocap.getFigure().getPlayer().getCurrentFrame());
+        }
+    }
 
     class PlaybackMenuListener implements ItemListener {
 
@@ -131,17 +147,29 @@ public class JMocapGUI extends JFrame {
         _jMocap = jmocap;
 
         createCursor();
+        _playbackSlider = new JSlider();
+        _playbackSlider.setValue(0);
+        _playbackSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                //System.out.println("slider: " + _playbackSlider.getValue());
+                _jMocap.getFigureManager().gotoFrame(_playbackSlider.getValue());
+            }
+        });
 
         // layout GUI
         setLayout(new BorderLayout());
         add(BorderLayout.CENTER, _jMocap.getViewComponent());
         add(BorderLayout.EAST, _control = new ControlPanel(_jMocap, this, actionListener));
+        add(BorderLayout.SOUTH, _playbackSlider);
         // add(BorderLayout.SOUTH, new AnimationPanel(_app, this));
         // add(BorderLayout.WEST, createLeftPane());
         setMenuBar(createMenubar(actionListener));
 
         // loadPreviousSkeleton();
-        AnimDriver ac = new AnimDriver(_jMocap.getFigureManager());
+        AnimDriver ac = new AnimDriver();
+        ac.addListener(_jMocap.getFigureManager());
+        ac.addListener(this);
         ac.start();
         pack();
         setVisible(true);
@@ -180,7 +208,9 @@ public class JMocapGUI extends JFrame {
 
     void updateAnimInfo(String name) {
         _control.getInfo().updateAnim(name);
-        // _control.getInfo().updateTotalFrames(_app.getFigure().getSkeleton().getNumFrames());
+        int frames = _jMocap.getFigure().getPlayer().getNumFrames();
+        _control.getInfo().updateTotalFrames(frames);
+        _playbackSlider.setMaximum(frames);
     }
 
     private MenuBar createMenubar(ActionListener actionListener) {
@@ -307,7 +337,7 @@ public class JMocapGUI extends JFrame {
                 }
             }
         });
-        
+
         // Zamponi
         mi = new MenuItem("Hand Direction");
         m.add(mi);
@@ -374,7 +404,7 @@ public class JMocapGUI extends JFrame {
     }
 
     /**
-     * Enables/disables only th ehierarchy with the given bone at its root.
+     * Enables/disables only the hierarchy with the given bone at its root.
      *
      * Disables/enables the rest.
      *

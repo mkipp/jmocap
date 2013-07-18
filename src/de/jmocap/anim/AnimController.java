@@ -71,7 +71,7 @@ public class AnimController extends AbstractAnimController
         gotoFrame(f < _animData.getNumFrames() ? f : _animData.getNumFrames() - 1);
     }
 
-    private void gotoFrame(int frame)
+    public void gotoFrame(int frame)
     {
         if (_animData != null) {
             for (int i = 0; i < _bones.length; i++) {
@@ -168,7 +168,7 @@ public class AnimController extends AbstractAnimController
      * @param fps The fps speed of the system
      */
     @Override
-    public void update(float fps)
+    public void update(double fps)
     {
         
         if (_isPlaying) {

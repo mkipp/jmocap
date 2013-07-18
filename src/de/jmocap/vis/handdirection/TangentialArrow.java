@@ -5,7 +5,7 @@ import javax.vecmath.*;
 
 /**
  * Contains one visible arrow object, stores some information needed by
- * TangentialArrowController
+ * HandDirectionController
  * 
  * @author Franziska Zamponi
  * @date 29.06.13
@@ -14,18 +14,15 @@ public class TangentialArrow {
 
     private ArrowInterface _arrow;
     private Point3d _position;
-//    private String _boneName;
-//    private double _time;
     private int _frame; //the arrow is supposed to be visual at this frame
     private TransformGroup _tg; //to put in Switch
     private int _switchIndex; //position in its Switch
+    private double length;
 
     public TangentialArrow(int frame, double scale) {
         _arrow = new Arrow();
         _arrow.setScale(scale);
-//        this._time = time;
         this._frame = frame;
-//        this._boneName = boneName;
         _tg = new TransformGroup();
         _tg.addChild(_arrow.getRoot());
     }
@@ -33,6 +30,14 @@ public class TangentialArrow {
     public TangentialArrow(int frame, double scale, Point3d position) {
         this(frame, scale);
         setPosition(position);
+    }
+    
+    public double getLength() {
+        return length;
+    }
+    
+    public void setLength(double len) {
+        length = len;
     }
 
     public void setArrow(Arrow arrow) {

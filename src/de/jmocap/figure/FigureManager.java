@@ -1,5 +1,6 @@
 package de.jmocap.figure;
 
+import de.jmocap.anim.AnimDriverListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import javax.vecmath.Point3d;
  * 
  * @author Michael Kipp
  */
-public class FigureManager {
+public class FigureManager implements AnimDriverListener {
 
     private List<Figure> _figures = new ArrayList<Figure>();
 
@@ -33,8 +34,13 @@ public class FigureManager {
     public List<Figure> getFigures() {
         return _figures;
     }
+    
+    public void gotoFrame(int frame) {
+        for (Figure f: _figures)
+            f.getPlayer().gotoFrame(frame);
+    }
 
-    public void update(float fps) {
+    public void update(double fps) {
         for (Figure f : _figures) {
             if (f.hasAnimation()) {
                 f.getPlayer().update(fps);

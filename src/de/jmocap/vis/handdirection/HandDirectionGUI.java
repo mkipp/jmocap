@@ -40,18 +40,20 @@ public class HandDirectionGUI {
     private JPanel _panelList;
     private JList _list;
     private JScrollPane _scrollList;
+    private Figure _figure;
 
     public HandDirectionGUI(HandDirectionController tac, Figure figure) {
         _tac = tac;
-
+        _figure = figure;
         _frame = new JFrame();
 
         _panelInsert = new JPanel(new FlowLayout());
-        _labelStartSec = new JLabel(" start time: ");
+        _labelStartSec = new JLabel("start: ");
         _textStartSec = new JTextField(10);
+        _textStartSec.setText("0");
         _panelInsert.add(_labelStartSec);
         _panelInsert.add(_textStartSec);
-        _labelEndSec = new JLabel(" end time: ");
+        _labelEndSec = new JLabel("end: ");
         _textEndSec = new JTextField(10);
         _panelInsert.add(_labelEndSec);
         _panelInsert.add(_textEndSec);
@@ -62,7 +64,7 @@ public class HandDirectionGUI {
         _panelInsert.add(_textFigure);
         _labelJoint = new JLabel(" joint: ");
         _textJoint = new JTextField(10);
-        _textJoint.setText("L_Wrist");
+        _textJoint.setText("R_Wrist");
         _panelInsert.add(_labelJoint);
         _panelInsert.add(_textJoint);
         _frame.getContentPane().add(BorderLayout.WEST, _panelInsert);
@@ -84,7 +86,7 @@ public class HandDirectionGUI {
         _frame.getContentPane().add(BorderLayout.EAST, _panelList);
 
         _frame.pack();
-        _frame.setSize(500, 500);
+        _frame.setSize(700, 200);
         _frame.setVisible(true);
     }
 
@@ -101,9 +103,13 @@ public class HandDirectionGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            double start = Double.parseDouble(_textStartSec.getText());
-            double end = Double.parseDouble(_textEndSec.getText());
-            _tac.addTaArMap(start, end, _textFigure.getText(), _textJoint.getText());
+            //double start = Double.parseDouble(_textStartSec.getText());
+            //double end = Double.parseDouble(_textEndSec.getText());
+            //_tac.addTaArMap(start, end, _textFigure.getText(), _textJoint.getText());
+            
+            int start = Integer.parseInt(_textStartSec.getText());
+            int end = Integer.parseInt(_textEndSec.getText());
+            _tac.addTaArMap(start, end , _textFigure.getText(), _textJoint.getText());
 
             // make changes visible:
             updateList(_list, _tac.getTaArMaps());

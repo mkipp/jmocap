@@ -7,7 +7,7 @@ import de.jmocap.anim.FrameChangeListener;
  * @version 06.2013
  */
 
-public class DiskListener implements FrameChangeListener{
+public class DiskListener implements FrameChangeListener {
 
     private DiskInterface di;
 

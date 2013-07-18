@@ -23,6 +23,7 @@ import javax.swing.BoxLayout;
  * playback etc.
  * 
  * @author Michael Kipp
+ * @version 18-07-2013
  */
 public class ControlPanel extends JPanel
 {
@@ -93,10 +94,10 @@ public class ControlPanel extends JPanel
     {
         URL url = getClass().getResource("/" + path);
         if (url != null) {
-            System.out.println("found url: " + url);
+            //System.out.println("found url: " + url);
             return new ImageIcon(url);
         } else {
-            System.out.println("no url");
+            //System.out.println("no url");
             return new ImageIcon(path);
         }
     }

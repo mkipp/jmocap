@@ -13,6 +13,7 @@ import de.jmocap.figure.Bone;
  * @author Michael Kipp
  */
 public abstract class AbstractAnimController {
+    
     protected List<FrameChangeListener> _listeners = new ArrayList<FrameChangeListener>();
     
     public void addListener(FrameChangeListener li) {
@@ -33,6 +34,6 @@ public abstract class AbstractAnimController {
     
     public abstract void reset();
     
-    public abstract void update(float fps);
+    public abstract void update(double fps);
 
 }

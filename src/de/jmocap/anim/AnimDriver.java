@@ -3,7 +3,8 @@ package de.jmocap.anim;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import de.jmocap.JMocap;
-import de.jmocap.figure.FigureManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Drives the figures managed by the FigureManager by calling the update
@@ -13,13 +14,22 @@ import de.jmocap.figure.FigureManager;
  */
 public class AnimDriver extends Thread {
 
-    private FigureManager _figureManager;
+    //private FigureManager _figureManager;
     private int _frames = 0;
     private float _fps = 100; // used for fps computation
     private long _t0 = System.currentTimeMillis();
+    private List<AnimDriverListener> listeners = new ArrayList<AnimDriverListener>();
 
-    public AnimDriver(FigureManager fm) {
-        _figureManager = fm;
+//    public AnimDriver(FigureManager fm) {
+//        //_figureManager = fm;
+//    }
+    
+    public void addListener(AnimDriverListener li) {
+        listeners.add(li);
+    }
+    
+    public void removeListener(AnimDriverListener li) {
+        listeners.remove(li);
     }
 
     @Override
@@ -34,7 +44,9 @@ public class AnimDriver extends Thread {
                 _frames = 0;
                 _t0 = t;
             }
-            _figureManager.update(_fps);
+            //_figureManager.update(_fps);
+            for (AnimDriverListener li: listeners)
+                li.update(_fps);
             try {
                 sleep(5);
             } catch (InterruptedException ex) {

@@ -13,14 +13,17 @@ import javax.media.j3d.Switch;
 import javax.vecmath.Vector3d;
 
 /**
+ * Creates, removes and controlls all arrow trails for different bones and
+ * figures (maps of TangentialArrows)
+ *
+ * MK 18.07.13: added threshold - only above certain speed arrows are displayed
+ *
  * @author Franziska Zamponi
  * @date 29.06.13
- *
- * creates, removes and controlls all "arrow trails for different bones and
- * figures" or maps of TangentialArrows
  */
 public class HandDirectionController {
 
+    private final static double ARROW_LENGTH_THRESHOLD = .3;
     private JMocap _jmocap;
     private List<ArrowTrail> _taArMaps;
     private BranchGroup _rootController;
@@ -36,32 +39,35 @@ public class HandDirectionController {
     }
 
     /**
-     * returns a map of TangentialArrows, but their angles are not jet computed
+     * MK: converted to frame.
+     * 
+     * @return map of TangentialArrows, angles are not yet computed
      */
     private Map<Integer, TangentialArrow> getNewTangentialArrows(
-            double startSec, double endSec, String figureName, String boneName) {
-        Map<Integer, TangentialArrow> mapTanArrow = new TreeMap<Integer, TangentialArrow>();
-        Figure figure = getFigure(figureName);//find the right figure
+            int startFrame, int endFrame, String figureName, String boneName) {
+        Map<Integer, TangentialArrow> map = new TreeMap<Integer, TangentialArrow>();
+        Figure figure = getFigure(figureName); //find the right figure
         double dDistance = 1 / (float) figure.getPlayer().getPlaybackFps();
 
         Bone bone = figure.getSkeleton().findBone(boneName);
         double scale = bone.getLength();
         int nCurrentFrame = figure.getPlayer().getCurrentFrame(); //save figure position for later
         if (bone != null) {
-            for (double time = startSec; time < endSec; time += dDistance) {
-                figure.getPlayer().gotoTime(time);
-                int frame = figure.getPlayer().getCurrentFrame();
+            for (int i = startFrame; i <= endFrame; i++) {
+            //for (double time = startSec; time < endSec; time += dDistance) {
+                figure.getPlayer().gotoFrame(i);
+                //int frame = figure.getPlayer().getCurrentFrame();
                 Point3d p3dPositionInWorld = new Point3d();
                 bone.getWorldPosition(p3dPositionInWorld);
-                mapTanArrow.put(frame, new TangentialArrow(
-                        frame, scale, p3dPositionInWorld));
+                map.put(i, new TangentialArrow(
+                        i, scale, p3dPositionInWorld));
             }
         }
         // go to old figure position:
         figure.getPlayer().gotoTime(
                 nCurrentFrame / figure.getPlayer().getPlaybackFps());
 
-        return mapTanArrow;
+        return map;
     }
 
     private Figure getFigure(String figureName) {
@@ -75,21 +81,21 @@ public class HandDirectionController {
     }
 
     /**
-     * adds a new GranchGroup with Switch controlling TangentialArrows, stores
+     * Adds a new BranchGroup with Switch controlling TangentialArrows, stores
      * the arrows as a new TaArMap object in the list _taArMap
      */
     public void addTaArMap(
-            double startSec, double endSec, String figureName, String boneName) {
+            int startFrame, int endFrame, String figureName, String boneName) {
         float currentFPS = getFigure(figureName).getPlayer().getPlaybackFps();
-        Map<Integer, TangentialArrow> mapTA = getNewTangentialArrows(startSec,
-                endSec, figureName, boneName);
+        Map<Integer, TangentialArrow> mapTA = getNewTangentialArrows(startFrame,
+                endFrame, figureName, boneName);
         mapTA = addAngles(mapTA, currentFPS);
         ArrowTrail newTaArMap = new ArrowTrail(figureName, boneName, currentFPS, mapTA);
         _rootController.addChild(newTaArMap.getRoot());
         getFigure(figureName).getPlayer().addListener(newTaArMap.getListener());
         _taArMaps.add(newTaArMap);
         // store some information for GUI:
-        newTaArMap.setStartAndEndSec(startSec, endSec);
+        newTaArMap.setStartAndEndSec(startFrame, endFrame);
     }
 
     /**
@@ -107,6 +113,8 @@ public class HandDirectionController {
      * old version! no longer in use!
      *
      * returns the average vector of two vecors
+     *
+     * @deprecated
      */
     private Vector3d getAverageVector(Vector3d v1, Vector3d v2) {
         //berechnet den Durchschnitts-Vektor aus zwei Vektoren
@@ -119,9 +127,7 @@ public class HandDirectionController {
     }
 
     /**
-     * new version!
-     *
-     * returns the average vector of all vectors in the list
+     * @return average vector of all vectors in the list
      */
     private Vector3d getAverageVector(List<Vector3d> vectors) {
         double x = 0, y = 0, z = 0;
@@ -208,6 +214,7 @@ public class HandDirectionController {
             }
             Vector3d vFinal = getAverageVector(vectorsForComputing);
             currentTA.setRotation(vFinal);
+            currentTA.setLength(vFinal.length());
         }
         return tangentialArrows;
     }
@@ -241,8 +248,8 @@ public class HandDirectionController {
     }
 
     /**
-     * contains a certain trail of arrows for a specific bone in a map
-     * and what is needed to operate on this certain trail
+     * contains a certain trail of arrows for a specific bone in a map and what
+     * is needed to operate on this certain trail
      */
     public class ArrowTrail {
 
@@ -284,8 +291,14 @@ public class HandDirectionController {
         public void updateSwitch(int frame) {
             if (_active == true) {
                 if (_tangentialArrows.containsKey(frame) == true) {
-                    int makeVisible = _tangentialArrows.get(frame).getSwitchIndex();
-                    _switch.setWhichChild(makeVisible);
+                    TangentialArrow arrow = _tangentialArrows.get(frame);
+                    if (arrow.getLength() > ARROW_LENGTH_THRESHOLD) {
+                        //System.out.println("arrow length = " + arrow.getLength());
+                        int makeVisible = arrow.getSwitchIndex();
+                        _switch.setWhichChild(makeVisible);
+                    } else {
+                        _switch.setWhichChild(Switch.CHILD_NONE);
+                    }
                 } else {
                     _switch.setWhichChild(Switch.CHILD_NONE);
                 }
