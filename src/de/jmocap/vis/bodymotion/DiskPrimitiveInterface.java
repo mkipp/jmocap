@@ -1,4 +1,4 @@
-package de.jmocap.vis.disk;
+package de.jmocap.vis.bodymotion;
 
 import javax.media.j3d.BranchGroup;
 

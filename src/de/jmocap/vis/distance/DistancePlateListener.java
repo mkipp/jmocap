@@ -2,15 +2,15 @@
  * @author Michael Christopher Hrstka
  * @version 06.2013
  */
-package de.jmocap.vis.distancePlate;
+package de.jmocap.vis.distance;
 
 import de.jmocap.anim.FrameChangeListener;
 
 public class DistancePlateListener implements FrameChangeListener {
 
-    private DistancePlateJMocap d;
+    private DistanceController d;
 
-    public DistancePlateListener(DistancePlateJMocap d) {
+    public DistancePlateListener(DistanceController d) {
         this.d = d;
     }
 

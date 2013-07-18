@@ -52,14 +52,14 @@ import de.jmocap.reader.BVHReader;
 import de.jmocap.reader.MocapReader;
 import de.jmocap.scene.CoordCross;
 import de.jmocap.scene.Floor;
-import de.jmocap.vis.disk.DiskInterface;
-import de.jmocap.vis.disk.SpeedDisk;
-import de.jmocap.vis.distancePlate.DistancePlateInterface;
-import de.jmocap.vis.distancePlate.DistancePlateJMocap;
+import de.jmocap.vis.bodymotion.DiskInterface;
+import de.jmocap.vis.bodymotion.Disk;
+import de.jmocap.vis.distance.DistancePlateInterface;
+import de.jmocap.vis.distance.DistanceController;
 import de.jmocap.vis.orientation.FacingAngleController;
 import de.jmocap.vis.gesturespace.McNeillGridLogic;
 import de.jmocap.vis.relativemovement.RelativeMovementPlate;
-import de.jmocap.vis.tangentialarrow.TangentialArrowController;
+import de.jmocap.vis.handdirection.HandDirectionController;
 import java.util.List;
 
 /**
@@ -118,7 +118,7 @@ public class JMocap
     private List<MotionTrailPoint> _motionTrailPoints = null;
     private CameraChangeListener _cameraChangeListener = null;
     private boolean _bShowMotionTrailVelocity = false;
-    private TangentialArrowController _tangentialArrowController; //Franziska
+    private HandDirectionController _tangentialArrowController; //Franziska
     private FacingAngleController _facingAngleController; //Franziska
 
     public JMocap() {
@@ -162,14 +162,14 @@ public class JMocap
         _canvas.addMouseMotionListener(this);
         _canvas.addMouseWheelListener(this);
         
-        _tangentialArrowController = new TangentialArrowController(this); //Franziska
+        _tangentialArrowController = new HandDirectionController(this); //Franziska
         _facingAngleController = new FacingAngleController(this); // Franziska
     }
 
     /**
      * @author Franziska Zamponi
      */
-    public TangentialArrowController getTangentialArrowController(){
+    public HandDirectionController getTangentialArrowController(){
         return _tangentialArrowController;
     }
     
@@ -184,7 +184,7 @@ public class JMocap
      * @author Michael Hrstka
      */
     public void addDistancePlate() {
-        DistancePlateInterface distanceObject =  new DistancePlateJMocap(this);
+        DistancePlateInterface distanceObject =  new DistanceController(this);
         // length between root and knee will be set as relative distance
         distanceObject.setRelativeDistance("Root", "R_Tibia");
         // set object
@@ -196,7 +196,7 @@ public class JMocap
      * @author Michael Hrstka
      */
     public void addDisk() {
-	DiskInterface disk = new SpeedDisk(this);
+	DiskInterface disk = new Disk(this);
         // set transperency, sensibility, radius ... here!
         // --- setyz ---
         disk.setDisk();

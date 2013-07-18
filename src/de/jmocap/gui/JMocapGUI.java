@@ -1,11 +1,11 @@
 /**
  * JMOCAP
- * 
- * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany
- * E-Mail: mich.kipp@googlemail.com
- * 
- * This software has been released under the
- * GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+ *
+ * Developed by Michael Kipp, 2008-2011, DFKI Saarbrücken, Germany E-Mail:
+ * mich.kipp@googlemail.com
+ *
+ * This software has been released under the GNU LESSER GENERAL PUBLIC LICENSE
+ * Version 3, 29 June 2007
  */
 package de.jmocap.gui;
 
@@ -20,7 +20,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
@@ -28,25 +27,22 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
-
 import com.sun.j3d.utils.geometry.Sphere;
-
 import de.jmocap.JMocap;
 import de.jmocap.figure.Bone;
 import de.jmocap.figure.BoneGeom;
 import de.jmocap.figure.JointGeom;
 import de.jmocap.anim.AnimDriver;
 import de.jmocap.vis.orientation.FacingAngleGUI;
-import de.jmocap.vis.tangentialarrow.TangentialArrowGUI;
+import de.jmocap.vis.handdirection.HandDirectionGUI;
 import javax.swing.JOptionPane;
 
 /**
  * Camera is set for a meter system, looking at a 2m person.
- * 
+ *
  * @author Michael Kipp
  */
-public class JMocapGUI extends JFrame
-{
+public class JMocapGUI extends JFrame {
 
     private static final float CURSOR_RADIUS = .02f;
     public static final String MENU_RESET_CAM = "Reset camera";
@@ -59,12 +55,10 @@ public class JMocapGUI extends JFrame
     private TransformGroup _cursorTG;
     private Point3d _cursorPos = new Point3d();
 
-    class PlaybackMenuListener implements ItemListener
-    {
+    class PlaybackMenuListener implements ItemListener {
 
         @Override
-        public void itemStateChanged(ItemEvent e)
-        {
+        public void itemStateChanged(ItemEvent e) {
             String item = e.getItem().toString();
             if (item.endsWith("translation")) {
                 _jMocap.getFigure().getSkeleton().setTranslationEnabled(
@@ -76,12 +70,10 @@ public class JMocapGUI extends JFrame
         }
     }
 
-    class ViewMenuListener implements ItemListener
-    {
+    class ViewMenuListener implements ItemListener {
 
         @Override
-        public void itemStateChanged(ItemEvent e)
-        {
+        public void itemStateChanged(ItemEvent e) {
             System.out.println("item= " + e.getItem());
             String item = e.getItem().toString();
             if (item.equals("bones off")) {
@@ -126,16 +118,12 @@ public class JMocapGUI extends JFrame
         }
     }
 
-    public JMocapGUI(ActionListener actionListener, JMocap jmocap)
-    {
+    public JMocapGUI(ActionListener actionListener, JMocap jmocap) {
         super();
         setTitle("Mocap Viewer");
-        addWindowListener(new WindowAdapter()
-        {
-
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e)
-            {
+            public void windowClosing(WindowEvent e) {
                 exit();
             }
         });
@@ -162,9 +150,8 @@ public class JMocapGUI extends JFrame
     public Point3d getCursorPos() {
         return _cursorPos;
     }
-    
-    private void createCursor()
-    {
+
+    private void createCursor() {
         _cursorTG = new TransformGroup();
         _cursorTG.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         Sphere s = new Sphere(CURSOR_RADIUS);
@@ -176,8 +163,7 @@ public class JMocapGUI extends JFrame
         _jMocap.getRootBG().addChild(bg);
     }
 
-    public void moveCursor(float x, float z)
-    {
+    public void moveCursor(float x, float z) {
         Transform3D t = new Transform3D();
         t.setTranslation(new Vector3f(x, 0, z));
         _cursorTG.setTransform(t);
@@ -185,22 +171,19 @@ public class JMocapGUI extends JFrame
         _cursorPos.z = z;
     }
 
-    void updateSkeletonInfo(String name)
-    {
+    void updateSkeletonInfo(String name) {
         _control.getInfo().updateSkeleton(name);
         if (_boneTree != null) {
             _boneTree.loadSkeleton(_jMocap.getFigure().getSkeleton());
         }
     }
 
-    void updateAnimInfo(String name)
-    {
+    void updateAnimInfo(String name) {
         _control.getInfo().updateAnim(name);
         // _control.getInfo().updateTotalFrames(_app.getFigure().getSkeleton().getNumFrames());
     }
 
-    private MenuBar createMenubar(ActionListener actionListener)
-    {
+    private MenuBar createMenubar(ActionListener actionListener) {
         MenuBar mb = new MenuBar();
 
         // ************** FILE MENU
@@ -231,11 +214,8 @@ public class JMocapGUI extends JFrame
         mb.add(m);
         mi = new MenuItem("Inspect bone");
         m.add(mi);
-        mi.addActionListener(new ActionListener()
-        {
-
-            public void actionPerformed(ActionEvent e)
-            {
+        mi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 new JointInspector(_jMocap.getFigure(),
                         _jMocap.getFigure().getSkeleton().findBone(
                         "lhand"));
@@ -294,96 +274,96 @@ public class JMocapGUI extends JFrame
         mb.add(m);
         mi = new MenuItem("Path controller");
         m.add(mi);
-        mi.addActionListener(new ActionListener()
-        {
-
-            public void actionPerformed(ActionEvent e)
-            {
+        mi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 showPathController();
             }
         });
 
-        // Levin McNeillGrid
-        
-        mi = new MenuItem("Gesture Space (McNeill)");
-        m.add(mi);
-        mi.addActionListener(new ActionListener() {
-        
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-        	if(_jMocap.getFigure() == null){
-				JOptionPane.showMessageDialog(new JFrame(), "BVH file required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
-			}else  _jMocap.addMcNeillGrid();
-        }
-        });
-        
-        mi = new MenuItem("Relative Movement Plate");
-        m.add(mi);
-        mi.addActionListener(new ActionListener() {
-        
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-        	if(_jMocap.getFigure() == null){
-			}else  _jMocap.addRelativeMovingPlates();
-        }
-        });
-        
-        // Michi JMocapDisk
+        // Hrstka 
         mi = new MenuItem("Speed Disk");
         m.add(mi);
         mi.addActionListener(new ActionListener() {
-			
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			if(_jMocap.getFigure() == null){
-				JOptionPane.showMessageDialog(new JFrame(), "BVH file required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
-			}else  _jMocap.addDisk();
-		}
-            });
-        
-        // Michi JMocapDistancePlate
-        mi = new MenuItem("Interpersonal Distance");
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (_jMocap.getFigure() == null) {
+                    JOptionPane.showMessageDialog(new JFrame(), "BVH file required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
+                } else {
+                    _jMocap.addDisk();
+                }
+            }
+        });
+
+        // von Hollen
+        mi = new MenuItem("Gesture Space (McNeill)");
         m.add(mi);
         mi.addActionListener(new ActionListener() {
-			
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			if(_jMocap.getFigureManager().getFigures().size() < 2){
-				JOptionPane.showMessageDialog(new JFrame(), "Two BVH files required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
-			}else  _jMocap.addDistancePlate();
-		}
-            });
-        
-        // Franziska: TangentialArrowGUI
-        mi = new MenuItem("Tangential Arrow");
-        m.add(mi);
-        mi.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                TangentialArrowGUI newGUI = new TangentialArrowGUI(_jMocap.getTangentialArrowController());
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (_jMocap.getFigure() == null) {
+                    JOptionPane.showMessageDialog(new JFrame(), "BVH file required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
+                } else {
+                    _jMocap.addMcNeillGrid();
+                }
             }
         });
         
-        // Franziska: FacingAngleGUI
+        // Zamponi
+        mi = new MenuItem("Hand Direction");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                HandDirectionGUI newGUI = new HandDirectionGUI(_jMocap.getTangentialArrowController(),
+                        _jMocap.getFigure());
+            }
+        });
+
+        // von Hollen
+        mi = new MenuItem("Relative Movement");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (_jMocap.getFigure() == null) {
+                } else {
+                    _jMocap.addRelativeMovingPlates();
+                }
+            }
+        });
+
+        // Hrstka
+        mi = new MenuItem("Interpersonal Distance");
+        m.add(mi);
+        mi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (_jMocap.getFigureManager().getFigures().size() < 2) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Two BVH files required! ", "Warning", JOptionPane.WARNING_MESSAGE, null);
+                } else {
+                    _jMocap.addDistancePlate();
+                }
+            }
+        });
+
+        // Zamponi
         mi = new MenuItem("Interpersonal Orientation");
         m.add(mi);
-        mi.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                
+        mi.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
                 FacingAngleGUI newGUI = new FacingAngleGUI(_jMocap.getFacingAngleController(),
                         _jMocap.getFigureManager().getFigures());
             }
         });
-        
+
         return mb;
     }
 
-    void setFps(int fps)
-    {
+    void setFps(int fps) {
         _control.setFps(fps);
     }
 
-    private JPanel createLeftPane()
-    {
+    private JPanel createLeftPane() {
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
         BoneInfoPanel bip = new BoneInfoPanel();
@@ -395,9 +375,9 @@ public class JMocapGUI extends JFrame
 
     /**
      * Enables/disables only th ehierarchy with the given bone at its root.
-     * 
+     *
      * Disables/enables the rest.
-     * 
+     *
      * @param layer
      * @param val
      */
@@ -408,15 +388,13 @@ public class JMocapGUI extends JFrame
     // b.setLayerEnabled(layer, val);
     // }
     // }
-    public void exit()
-    {
+    public void exit() {
         System.out.println("*** CLEAN EXIT ***");
         dispose();
         System.exit(0);
     }
 
-    private void showPathController()
-    {
+    private void showPathController() {
         new MotionTrailsControllerGUI(_jMocap);
     }
 }

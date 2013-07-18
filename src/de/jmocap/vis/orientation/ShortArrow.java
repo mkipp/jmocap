@@ -3,7 +3,7 @@ package de.jmocap.vis.orientation;
 import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
-import de.jmocap.vis.tangentialarrow.ArrowInterface;
+import de.jmocap.vis.handdirection.ArrowInterface;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.ColoringAttributes;

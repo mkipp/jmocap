@@ -1,4 +1,4 @@
-package de.jmocap.vis.disk;
+package de.jmocap.vis.bodymotion;
 
 import de.jmocap.anim.FrameChangeListener;
 
@@ -11,7 +11,7 @@ public class DiskListener implements FrameChangeListener{
 
     private DiskInterface di;
 
-    public DiskListener(SpeedDisk di){
+    public DiskListener(Disk di){
         this.di = di;
     }
 

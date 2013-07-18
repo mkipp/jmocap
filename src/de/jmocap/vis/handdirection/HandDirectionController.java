@@ -1,4 +1,4 @@
-package de.jmocap.vis.tangentialarrow;
+package de.jmocap.vis.handdirection;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -19,20 +19,20 @@ import javax.vecmath.Vector3d;
  * creates, removes and controlls all "arrow trails for different bones and
  * figures" or maps of TangentialArrows
  */
-public class TangentialArrowController {
+public class HandDirectionController {
 
     private JMocap _jmocap;
-    private List<TaArMap> _taArMaps;
+    private List<ArrowTrail> _taArMaps;
     private BranchGroup _rootController;
 
-    public TangentialArrowController(JMocap jmocap) {
+    public HandDirectionController(JMocap jmocap) {
         _jmocap = jmocap;
         _rootController = new BranchGroup();
         _rootController.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
         _rootController.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
         _rootController.setCapability(BranchGroup.ALLOW_DETACH);
         _jmocap.getRootBG().addChild(_rootController);
-        _taArMaps = new ArrayList<TaArMap>();
+        _taArMaps = new ArrayList<ArrowTrail>();
     }
 
     /**
@@ -54,7 +54,7 @@ public class TangentialArrowController {
                 Point3d p3dPositionInWorld = new Point3d();
                 bone.getWorldPosition(p3dPositionInWorld);
                 mapTanArrow.put(frame, new TangentialArrow(
-                        frame, time, boneName, scale, p3dPositionInWorld));
+                        frame, scale, p3dPositionInWorld));
             }
         }
         // go to old figure position:
@@ -84,7 +84,7 @@ public class TangentialArrowController {
         Map<Integer, TangentialArrow> mapTA = getNewTangentialArrows(startSec,
                 endSec, figureName, boneName);
         mapTA = addAngles(mapTA, currentFPS);
-        TaArMap newTaArMap = new TaArMap(figureName, boneName, currentFPS, mapTA);
+        ArrowTrail newTaArMap = new ArrowTrail(figureName, boneName, currentFPS, mapTA);
         _rootController.addChild(newTaArMap.getRoot());
         getFigure(figureName).getPlayer().addListener(newTaArMap.getListener());
         _taArMaps.add(newTaArMap);
@@ -213,7 +213,7 @@ public class TangentialArrowController {
     }
 
     public void removeTaArMap(String string) {
-        for (TaArMap map : _taArMaps) {
+        for (ArrowTrail map : _taArMaps) {
             if (map.toString().equals(string)) {
                 removeTaArMap(map);
             }
@@ -223,7 +223,7 @@ public class TangentialArrowController {
     /**
      * removes the specific savely from the list
      */
-    public void removeTaArMap(TaArMap taArMap) {
+    public void removeTaArMap(ArrowTrail taArMap) {
         // remove Listener:
         getFigure(taArMap.getFigureName()).getPlayer().removeListener(taArMap.getListener());
         // remove BranchGroup:
@@ -236,15 +236,15 @@ public class TangentialArrowController {
         return _rootController;
     }
 
-    public List<TaArMap> getTaArMaps() {
+    public List<ArrowTrail> getTaArMaps() {
         return _taArMaps;
     }
 
-    /*
+    /**
      * contains a certain trail of arrows for a specific bone in a map
      * and what is needed to operate on this certain trail
      */
-    public class TaArMap {
+    public class ArrowTrail {
 
         private String _figureName;
         private String _boneName;
@@ -252,19 +252,19 @@ public class TangentialArrowController {
         private Switch _switch;
         private boolean _active; // means ready to work with _switch
         private float _fps; // if the fps in AnimController is not equal this Object gets useless! 
-        private TangentialArrowFrameListener _listener;
+        private HandDirectionFrameListener _listener;
         private Map<Integer, TangentialArrow> _tangentialArrows; //trail of arrows for a specific bone
         //information needed for the GUI:
         private double _startSec;
         private double _endSec;
 
-        private TaArMap(String figureName, String boneName, float fps,
+        private ArrowTrail(String figureName, String boneName, float fps,
                 Map<Integer, TangentialArrow> tangentialArrows) {
             _figureName = figureName;
             _boneName = boneName;
             _fps = fps;
             _tangentialArrows = tangentialArrows;
-            _listener = new TangentialArrowFrameListener(this);
+            _listener = new HandDirectionFrameListener(this);
 
             // add Arrows to Switch:
             _switch = new Switch();
@@ -304,7 +304,7 @@ public class TangentialArrowController {
             return _rootTaArMap;
         }
 
-        private TangentialArrowFrameListener getListener() {
+        private HandDirectionFrameListener getListener() {
             return _listener;
         }
 

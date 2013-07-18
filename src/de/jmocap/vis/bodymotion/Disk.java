@@ -1,4 +1,4 @@
-package de.jmocap.vis.disk;
+package de.jmocap.vis.bodymotion;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javax.media.j3d.ColoringAttributes;
  * @version 06.2013
  */
 
-public class SpeedDisk implements DiskInterface {
+public class Disk implements DiskInterface {
 
     private float transparency = 0.5f;                      //	general transparency of the disk
     private float diskRadius = 0.8f;                        //	general size of the disk
@@ -47,7 +47,7 @@ public class SpeedDisk implements DiskInterface {
      *
      * @param jmocap
      */
-    public SpeedDisk(JMocap jmocap) {
+    public Disk(JMocap jmocap) {
 
         this.jmocap = jmocap;
 

@@ -1,37 +1,37 @@
-package de.jmocap.vis.tangentialarrow;
+package de.jmocap.vis.handdirection;
 
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
 /**
+ * Contains one visible arrow object, stores some information needed by
+ * TangentialArrowController
+ * 
  * @author Franziska Zamponi
  * @date 29.06.13
- *
- * contains one actual visible arrow object, stores some information needed by
- * TangentialArrowController
  */
 public class TangentialArrow {
 
     private ArrowInterface _arrow;
     private Point3d _position;
-    private String _boneName;
-    private double _time;
+//    private String _boneName;
+//    private double _time;
     private int _frame; //the arrow is supposed to be visual at this frame
     private TransformGroup _tg; //to put in Switch
     private int _switchIndex; //position in its Switch
 
-    public TangentialArrow(int frame, double time, String boneName, double scale) {
+    public TangentialArrow(int frame, double scale) {
         _arrow = new Arrow();
         _arrow.setScale(scale);
-        this._time = time;
+//        this._time = time;
         this._frame = frame;
-        this._boneName = boneName;
+//        this._boneName = boneName;
         _tg = new TransformGroup();
         _tg.addChild(_arrow.getRoot());
     }
 
-    public TangentialArrow(int frame, double time, String boneName, double scale, Point3d position) {
-        this(frame, time, boneName, scale);
+    public TangentialArrow(int frame, double scale, Point3d position) {
+        this(frame, scale);
         setPosition(position);
     }
 

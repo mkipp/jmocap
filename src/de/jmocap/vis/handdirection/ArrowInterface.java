@@ -1,4 +1,4 @@
-package de.jmocap.vis.tangentialarrow;
+package de.jmocap.vis.handdirection;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;

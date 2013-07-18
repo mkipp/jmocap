@@ -2,7 +2,7 @@
  * @author Michael Christopher Hrstka
  * @version 06.2013
  */
-package de.jmocap.vis.disk;
+package de.jmocap.vis.bodymotion;
 
 public interface DiskInterface {
 

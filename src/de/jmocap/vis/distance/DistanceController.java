@@ -1,4 +1,4 @@
-package de.jmocap.vis.distancePlate;
+package de.jmocap.vis.distance;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Transform3D;
@@ -8,8 +8,8 @@ import javax.vecmath.Vector3d;
 import com.sun.j3d.utils.geometry.Primitive;
 import de.jmocap.JMocap;
 import de.jmocap.anim.FrameChangeListener;
-import de.jmocap.vis.disk.DiskPrimitive;
-import de.jmocap.vis.disk.DiskPrimitiveInterface;
+import de.jmocap.vis.bodymotion.DiskPrimitive;
+import de.jmocap.vis.bodymotion.DiskPrimitiveInterface;
 import de.jmocap.figure.Bone;
 import de.jmocap.figure.Figure;
 import java.awt.Color;
@@ -22,7 +22,7 @@ import javax.vecmath.Point3d;
  * @author Michael Christopher Hrstka
  * @version 06.2013
  */
-public class DistancePlateJMocap implements DistancePlateInterface {
+public class DistanceController implements DistancePlateInterface {
 
     private DiskPrimitiveInterface disk;
     private BranchGroup distanceObject;
@@ -60,7 +60,7 @@ public class DistancePlateJMocap implements DistancePlateInterface {
      *
      * @param jmocap
      */
-    public DistancePlateJMocap(JMocap jmocap) {
+    public DistanceController(JMocap jmocap) {
         this.jmocap = jmocap;
 
         // get first and second figure

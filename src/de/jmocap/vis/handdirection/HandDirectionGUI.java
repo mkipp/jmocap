@@ -1,5 +1,6 @@
-package de.jmocap.vis.tangentialarrow;
+package de.jmocap.vis.handdirection;
 
+import de.jmocap.figure.Figure;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -19,9 +20,9 @@ import javax.swing.ListSelectionModel;
  * @author Franziska Zamponi
  * @date 29.06.13
  */
-public class TangentialArrowGUI {
+public class HandDirectionGUI {
 
-    private TangentialArrowController _tac;
+    private HandDirectionController _tac;
     private JFrame _frame;
     private JPanel _panelInsert;
     private JLabel _labelStartSec;
@@ -40,7 +41,7 @@ public class TangentialArrowGUI {
     private JList _list;
     private JScrollPane _scrollList;
 
-    public TangentialArrowGUI(TangentialArrowController tac) {
+    public HandDirectionGUI(HandDirectionController tac, Figure figure) {
         _tac = tac;
 
         _frame = new JFrame();
@@ -56,10 +57,12 @@ public class TangentialArrowGUI {
         _panelInsert.add(_textEndSec);
         _labelFigure = new JLabel(" figure: ");
         _textFigure = new JTextField(10);
+        _textFigure.setText(figure.getName());
         _panelInsert.add(_labelFigure);
         _panelInsert.add(_textFigure);
         _labelJoint = new JLabel(" joint: ");
         _textJoint = new JTextField(10);
+        _textJoint.setText("L_Wrist");
         _panelInsert.add(_labelJoint);
         _panelInsert.add(_textJoint);
         _frame.getContentPane().add(BorderLayout.WEST, _panelInsert);
@@ -72,8 +75,6 @@ public class TangentialArrowGUI {
         _frame.getContentPane().add(BorderLayout.SOUTH, _panelButtons);
         _buttonAdd.addActionListener(new ButtonAddListener());
         _buttonRemove.addActionListener(new ButtonRemoveListener());
-
-//        _list = new JList(_tac.getTaArMaps().toArray());
         _list = new JList(new DefaultListModel());
         updateList(_list, _tac.getTaArMaps());
         _scrollList = new JScrollPane(_list);
@@ -82,11 +83,12 @@ public class TangentialArrowGUI {
         _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _frame.getContentPane().add(BorderLayout.EAST, _panelList);
 
+        _frame.pack();
         _frame.setSize(500, 500);
         _frame.setVisible(true);
     }
 
-    public void updateList(JList list, List<TangentialArrowController.TaArMap> objs) {
+    public void updateList(JList list, List<HandDirectionController.ArrowTrail> objs) {
         DefaultListModel listModel = (DefaultListModel) list.getModel();
         listModel.clear();
         listModel.removeAllElements();

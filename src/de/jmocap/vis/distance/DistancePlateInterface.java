@@ -1,4 +1,4 @@
-package de.jmocap.vis.distancePlate;
+package de.jmocap.vis.distance;
 
 /**
  * @author Michael Christopher Hrstka

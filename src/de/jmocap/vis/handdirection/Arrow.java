@@ -1,4 +1,4 @@
-package de.jmocap.vis.tangentialarrow;
+package de.jmocap.vis.handdirection;
 
 import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.geometry.Cylinder;

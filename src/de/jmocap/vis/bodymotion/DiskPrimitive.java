@@ -1,4 +1,4 @@
-package de.jmocap.vis.disk;
+package de.jmocap.vis.bodymotion;
 
 import java.awt.Color;
 import javax.media.j3d.Appearance;
@@ -10,8 +10,8 @@ import javax.vecmath.Color3f;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Text2D;
-import de.jmocap.vis.tangentialarrow.Arrow;
-import de.jmocap.vis.tangentialarrow.ArrowInterface;
+import de.jmocap.vis.handdirection.Arrow;
+import de.jmocap.vis.handdirection.ArrowInterface;
 import java.awt.Font;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.PolygonAttributes;

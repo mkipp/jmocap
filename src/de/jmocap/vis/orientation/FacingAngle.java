@@ -2,7 +2,7 @@ package de.jmocap.vis.orientation;
 
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.geometry.Text2D;
-import de.jmocap.vis.tangentialarrow.ArrowInterface;
+import de.jmocap.vis.handdirection.ArrowInterface;
 import java.awt.Font;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Transform3D;
